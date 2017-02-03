@@ -1,11 +1,18 @@
 <?php
     require 'config.php';
-    require 'smarty/Smarty.class.php';
+    require 'Template.class.php';
     
-    function GetSmarty(){
-        $smarty = new Smarty();
 
-        $smarty->setCompileDir(ROOT_FOLDER . '/cache/compile')->setCacheDir(ROOT_FOLDER . '/cache/result');
-
-        return $smarty;
+	
+    /**
+     * Vérifier si la chaîne spécifiée commence par une autre chaîne.
+     * @param string $haystack Chaîne où chercher.
+     * @param string $needle Chaîne à trouver.
+     * @return bool <code>true</code> si trouvé, <code>false</code> sinon.
+     */
+    function startsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+        
+        return (substr($haystack, 0, $length) === $needle);
     }

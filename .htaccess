@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+    # Activer la redirection
+    Options +FollowSymLinks
+    RewriteEngine On
+
+    RewriteBase "/gamamasi/"
+    
+    # Gestion des erreurs
+    ErrorDocument 404 "/erreur404.html"
+
+    # Règle de redirection générale
+    RewriteRule "^(.+)\.html$" "index.php?page=$1" [L]
+</IfModule>
