@@ -1,32 +1,38 @@
 <?php
-    // Initialiser la session PHP
-    session_start();
-    
-    // Charger les librairies
-    require("lib/tools.php");
+// Initialiser la session PHP
+session_start();
 
-    // Initialiser la page par défaut
-    $pageToShow = filter_input(INPUT_GET, "page", FILTER_SANITIZE_URL);
-    // Si la page n'est pas spécifiée
-    if (!isset($pageToShow) || empty($pageToShow)){
-        // Afficher la page d'index
-        $pageToShow = "index";
-    }
-    // Initialiser le moteur de template
-    $template = new Template();
-    
-    try{
-        // Si l'initialisation du template a échoué
-        if (!$template->setPage($pageToShow)){
-            // Afficher une page d'erreur 404
-            $template->setPage("erreur404");
-        }
+// Charger les librairies
+require("lib/tools.php");
 
-        $template->render();
+echo("paramètres GET : ");
+var_dump($_GET);
+
+echo("paramètres POST : ");
+var_dump($_POST);
+
+// Initialiser la page par défaut
+$pageToShow = filter_input(INPUT_GET, "page", FILTER_SANITIZE_URL);
+// Si la page n'est pas spécifiée
+if (!isset($pageToShow) || empty($pageToShow)){
+    // Afficher la page d'index
+    $pageToShow = "index";
+}
+// Initialiser le moteur de template
+$template = new Template();
+
+try{
+    // Si l'initialisation du template a échoué
+    if (!$template->setPage($pageToShow)){
+        // Afficher une page d'erreur 404
+        $template->setPage("erreur404");
     }
-    // En cas d'erreur
-    catch(Exception $ex){
-        // Afficher la page spécifique
-        $template->setPage("erreur500");
-        $template->render();
-    }
+
+    $template->render();
+}
+// En cas d'erreur
+catch(Exception $ex){
+    // Afficher la page spécifique
+    $template->setPage("erreur500");
+    $template->render();
+}

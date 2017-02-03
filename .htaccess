@@ -1,13 +1,20 @@
 <IfModule mod_rewrite.c>
-    # Activer la redirection
+    # Activer la redirection #
+    ##########################
     Options +FollowSymLinks
     RewriteEngine On
 
+    # Définir le répertoire de base pour la redirection #
+    #####################################################
     RewriteBase "/gamamasi/"
     
-    # Gestion des erreurs
+    # Gestion de la page 404 #
+    ##########################
     ErrorDocument 404 "/erreur404.html"
 
-    # Règle de redirection générale
+    # Règles de redirection #
+    #########################
+    RewriteRule "^(.+)\.html?$" "index.php?page=$1\&%{QUERY_STRING}" [NC,L]
     RewriteRule "^(.+)\.html$" "index.php?page=$1" [L]
+
 </IfModule>
