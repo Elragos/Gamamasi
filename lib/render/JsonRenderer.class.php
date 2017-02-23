@@ -23,7 +23,7 @@ class JsonRenderer implements Renderer {
         // Et que le fichier data.php existe 
         && file_exists($realPagePath . DIRECTORY_SEPARATOR . 'ajax.php')){
             // Charger les spécifications de la page
-            require($realPagePath . DIRECTORY_SEPARATOR . $this->pageDir . 'ajax.php');
+            require($realPagePath . DIRECTORY_SEPARATOR . 'ajax.php');
 
             // La page a été initialisée
             return true;                
