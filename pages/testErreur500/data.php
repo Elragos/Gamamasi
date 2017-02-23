@@ -1,9 +1,10 @@
 <?php
 
-// Indiquer le titre de la page
-$this->pageTitle = "Test Erreur serveur";
+global $renderManager;
 
-// Indiquer le template à utiliser
-$this->pageBody = __DIR__ . DIRECTORY_SEPARATOR . "content.tpl";
+$renderManager->pageDatas = array(
+    // Indiquer le titre de la page
+    "title" => "Test Erreur serveur",
+);
 
 throw new Exception("Test erreur serveur");

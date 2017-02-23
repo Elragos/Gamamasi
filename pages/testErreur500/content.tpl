@@ -1,3 +1,3 @@
 <div id="page500">
-    Erreur interne au serveur >_<
+    Erreur interne à la page :'(
 </div>

@@ -10,11 +10,22 @@
     
     # Gestion de la page 404 #
     ##########################
-    ErrorDocument 404 "/erreur404.html"
+    ErrorDocument 404 "/gamamasi/erreur404.html"
 
     # Règles de redirection #
     #########################
+    # Accès classique à une page
     RewriteRule "^(.+)\.html?$" "index.php?page=$1\&%{QUERY_STRING}" [NC,L]
     RewriteRule "^(.+)\.html$" "index.php?page=$1" [L]
+    # Accès à une page en AJAX
+    RewriteRule "^(.+)\.do?$" "index.php?ajax=$1\&%{QUERY_STRING}" [NC,L]
+    RewriteRule "^(.+)\.do$" "index.php?ajax=$1" [L]
+    # Accès à un script JS
+    RewriteRule "^js/(.+)\.js?$" "js/$1.js?{QUERY_STRING}" [NC,L]
+    RewriteRule "^js/(.+)\.js$" "js/$1.js" [L]
+    # Accès à un fichier CSS
+    RewriteRule "^css/(.+)\.css?$" "index.php?css=$1\&%{QUERY_STRING}" [NC,L]
+    RewriteRule "^css/(.+)\.css" "index.php?css=$1" [L]
+
 
 </IfModule>

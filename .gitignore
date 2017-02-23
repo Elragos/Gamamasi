@@ -38,5 +38,9 @@ Thumbs.db
 
 # Smarty generated files #
 ##########################
-cache/compile/*
-cache/result/*
+cache/smarty/compile/*
+cache/smarty/result/*
+
+# Lessc generated files #
+##########################
+cache/lessc/*
