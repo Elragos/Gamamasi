@@ -26,6 +26,4 @@
     # Accès à un fichier CSS
     RewriteRule "^css/(.+)\.css?$" "index.php?css=$1\&%{QUERY_STRING}" [NC,L]
     RewriteRule "^css/(.+)\.css" "index.php?css=$1" [L]
-
-
 </IfModule>

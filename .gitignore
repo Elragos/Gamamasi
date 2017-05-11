@@ -44,3 +44,4 @@ cache/smarty/result/*
 # Lessc generated files #
 ##########################
 cache/lessc/*
+/nbproject/private/
