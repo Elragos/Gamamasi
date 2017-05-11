@@ -12,9 +12,9 @@
     <a href="testErreur500.html">
         Tester l'erreur 500
     </a>
-    <form method="GET" action="index.do">
+    <form method="GET" action="index.do" id="testAjax">
         <input type="hidden" name="maVariable" value="existe" />
-        <input type="submit" value="Tester formulaire GET" />
+        <input id="sendAjax" type="submit" value="Tester formulaire GET" />
     </form>
     <form method="POST" action="index.do">
         <input type="hidden" name="maVariable" value="existe"  />

@@ -6,11 +6,11 @@
 
     # Définir le répertoire de base pour la redirection #
     #####################################################
-    RewriteBase "/gamamasi/"
+    RewriteBase "/wam&co/"
     
     # Gestion de la page 404 #
     ##########################
-    ErrorDocument 404 "/gamamasi/erreur404.html"
+    ErrorDocument 404 "/wam&co/erreur404.html"
 
     # Règles de redirection #
     #########################
