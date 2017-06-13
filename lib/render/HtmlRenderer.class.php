@@ -75,8 +75,7 @@ class HtmlRenderer implements Renderer {
         $realPagePath = realpath(PAGE_FOLDER . DIRECTORY_SEPARATOR . $pagePath) . DIRECTORY_SEPARATOR;
         
         // Si on doit recharger le cache ou que la page n'a pas été mise en cache
-        if ($reloadCache ||!$this->smarty->isCached($realPagePath . 'content.tpl')){
-            
+        if ($reloadCache){            
             // Nettoyer le cache pour ce fichier
             $this->smarty->clearCache($realPagePath . 'content.tpl');
         }
@@ -84,7 +83,7 @@ class HtmlRenderer implements Renderer {
         // Assigner les données au template si elles existent
         if (!empty($pageDatas)){
             foreach($pageDatas as $dataName => $dataValue){
-                $this->smarty->assign($dataName, $dataValue);
+                $this->smarty->assign($dataName, $dataValue, true);
             }            
         }
 
@@ -96,7 +95,7 @@ class HtmlRenderer implements Renderer {
         $this->smarty->assign("bodyContent", $realPagePath . "content.tpl");
 
         // Assigner la racine du site
-        $this->smarty->assign("rootURL", BASE_URL);
+        $this->smarty->assign("rootURL", BASE_URL, true);
         
         // Afficher le template
         return $this->smarty->fetch($this->pageLayout);

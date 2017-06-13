@@ -1,23 +1,29 @@
 <?php
-    // Racine du site
-    define("ROOT_FOLDER", realpath(__DIR__  . DIRECTORY_SEPARATOR . ".."));
-    // Répertoire des pages du site
-    define("PAGE_FOLDER", realpath(ROOT_FOLDER . DIRECTORY_SEPARATOR . 'pages' ));
-    // Répertoire de cache
-    define("CACHE_FOLDER", realpath(ROOT_FOLDER . DIRECTORY_SEPARATOR . 'cache'));
-    // Répertoire de cache Smarty
-    define("SMARTY_CACHE_FOLDER", realpath(CACHE_FOLDER . DIRECTORY_SEPARATOR . 'smarty'));
-    // Répertoire de cache LessC
-    define("LESSC_CACHE_FOLDER", realpath(CACHE_FOLDER . DIRECTORY_SEPARATOR . 'lessc'));
-    // Répertoire de style (images, CSS ...)
-    define("STYLE_FOLDER", realpath(ROOT_FOLDER . DIRECTORY_SEPARATOR . 'style'));
-    // Répertoire de logs
-    define("LOGS_FOLDER", realpath(ROOT_FOLDER . DIRECTORY_SEPARATOR . 'logs'));
-    // Répertoire de logs d'erreurs
-    define("ERRORS_LOGS_FOLDER", realpath(LOGS_FOLDER . DIRECTORY_SEPARATOR . 'errors'));
+    // Identifiants pour la connexion à la DB, détruits après initialisation de DbManager
+    $dbConfig = array(
+        'DB_HOST' => "localhost",
+        'DB_PORT' => "3306",
+        'DB_NAME' => "wamco",
+        'DB_TABLE_PREFIX' => "wam_",
+        'DB_WRITING_USER' => "WamWriter",
+        'DB_WRITING_PASSWORD' => "WamWriter",
+        'DB_READING_USER' => "WamReader", // OPTIONNEL
+        'DB_READING_PASSWORD' => "WamReader", // OPTIONNEL
+    );
     
-    // Calculer l'URL racine du site
-    DEFINE('HTTP_TYPE', filter_input(INPUT_SERVER, "REQUEST_SCHEME", FILTER_SANITIZE_URL));
-    DEFINE('HTTP_ROOT',filter_input(INPUT_SERVER, "HTTP_HOST", FILTER_SANITIZE_URL));
-    DEFINE('HTTP_FOLDER', dirname(filter_input(INPUT_SERVER, "PHP_SELF", FILTER_SANITIZE_URL)) . '/');
-    DEFINE('BASE_URL', HTTP_TYPE . "://" . HTTP_ROOT . HTTP_FOLDER);
+    // Initialiser le DbManager
+    $dbManager = new DbManager(
+        $dbConfig["DB_HOST"],
+        $dbConfig["DB_PORT"],
+        $dbConfig["DB_NAME"],
+        $dbConfig["DB_WRITING_USER"],
+        $dbConfig["DB_WRITING_PASSWORD"],
+        $dbConfig["DB_READING_USER"],
+        $dbConfig["DB_READING_PASSWORD"]
+    );
+
+    DEFINE("DB_TABLE_PREFIX", $dbConfig["DB_TABLE_PREFIX"]);
+    $_SESSION["DB_MANAGER"] = $dbManager;
+    // Détruire les variables de configuration de la DB
+    unset($dbConfig);
+    

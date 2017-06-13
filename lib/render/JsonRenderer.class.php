@@ -15,7 +15,7 @@ class JsonRenderer implements Renderer {
     public function setPage($pagePath){
         // Résoudre le chemin du répertoire demandée
         $realPagePath = realpath(PAGE_FOLDER . DIRECTORY_SEPARATOR . $pagePath);
-        
+
         // Si le répertoire existe
         if (file_exists($realPagePath)            
         // S'il est dans le répertoire pages

@@ -10,11 +10,10 @@ var_dump($_GET);
 
 echo("paramètres POST : ");
 var_dump($_POST);
-
  */
 
 // initialisation du moteur de template
-$renderManager = new RenderManager();
+$_SESSION["RENDER_MANAGER"] = new RenderManager();
 
 // Récupérer la page demandée
 $userPage = filter_input(INPUT_GET, "page", FILTER_SANITIZE_URL);
@@ -33,7 +32,7 @@ if (isset($userPage) && !empty($userPage)){
     // Afficher cette page
     $pageToShow = $userPage;
     // Indiquer l'utilisation du moteur HTML
-    $renderManager->currentRenderEngine = RenderManager::RENDER_HTML;
+    $_SESSION["RENDER_MANAGER"]->currentRenderEngine = RenderManager::RENDER_HTML;
 }
 
 // Si demande AJAX
@@ -41,7 +40,7 @@ if (isset($ajaxPage) && !empty($ajaxPage)){
     // Utiliser cette page
     $pageToShow = $ajaxPage;
     // Instancier le template JSON
-    $renderManager->currentRenderEngine = RenderManager::RENDER_JSON;
+    $_SESSION["RENDER_MANAGER"]->currentRenderEngine = RenderManager::RENDER_JSON;
 }
 
 // Si demande CSS
@@ -49,14 +48,14 @@ if (isset($cssPage) && !empty($cssPage)){
     // Utiliser cette page
     $pageToShow = $cssPage;
     // Instancier le template JSON
-    $renderManager->currentRenderEngine = RenderManager::RENDER_CSS;
+    $_SESSION["RENDER_MANAGER"]->currentRenderEngine = RenderManager::RENDER_CSS;
 }
 
 try{
     // Si l'initialisation du template a échoué
-    if (!$renderManager->setPage($pageToShow)){
+    if (!$_SESSION["RENDER_MANAGER"]->setPage($pageToShow)){
         // Afficher une page d'erreur 404
-        $renderManager->setPage("erreur404");
+        $_SESSION["RENDER_MANAGER"]->setPage("erreur404");
     }
 }
 // En cas d'erreur
@@ -65,11 +64,11 @@ catch(Exception $ex){
     logException($ex, $pageToShow);
     
     // Indiquer l'utilisation du moteur HTML
-    $renderManager->currentRenderEngine = RenderManager::RENDER_HTML;
+    $_SESSION["RENDER_MANAGER"]->currentRenderEngine = RenderManager::RENDER_HTML;
 
-    $renderManager->setPage("erreur500");
+    $_SESSION["RENDER_MANAGER"]->setPage("erreur500");
 }
 
 // Afficher le résultat
-echo($renderManager->render());
+echo($_SESSION["RENDER_MANAGER"]->render());
 

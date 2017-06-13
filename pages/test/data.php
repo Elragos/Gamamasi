@@ -1,8 +1,6 @@
 <?php
 
-global $renderManager;
-
-$renderManager->pageDatas = array(
+$_SESSION["RENDER_MANAGER"]->pageDatas = array(
     // Indiquer le titre de la page
     "title" => "Test",
 );

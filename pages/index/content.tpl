@@ -12,6 +12,10 @@
     <a href="testErreur500.html">
         Tester l'erreur 500
     </a>
+    <br />
+    <a href="testLectureDB.html">
+        Tester la connexion à la DB
+    </a>
     <form method="GET" action="index.do" id="testAjax">
         <input type="hidden" name="maVariable" value="existe" />
         <input id="sendAjax" type="submit" value="Tester formulaire GET" />
