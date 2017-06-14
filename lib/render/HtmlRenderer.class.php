@@ -86,16 +86,16 @@ class HtmlRenderer implements Renderer {
                 $this->smarty->assign($dataName, $dataValue, true);
             }            
         }
-
+        
         // Assigner le js relatif à la page s'il existe
         $this->smarty->assign("js", file_exists($realPagePath . "script.js") 
-            ? file_get_contents($realPagePath . "script.js") : "");
+            ? file_get_contents($realPagePath . "script.js") : "", true);
 
         // Assigner le corps de page
         $this->smarty->assign("bodyContent", $realPagePath . "content.tpl");
 
         // Assigner la racine du site
-        $this->smarty->assign("rootURL", BASE_URL, true);
+        $this->smarty->assign("rootURL", BASE_URL);
         
         // Afficher le template
         return $this->smarty->fetch($this->pageLayout);

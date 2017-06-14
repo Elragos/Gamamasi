@@ -112,14 +112,23 @@ class DbManager {
      * @return array Résultats de la requête.
      */
     public function exec($request, $requestParameters = array(), $reading = true){
+        // Déclaration du résultat
+        $result = false;
         // Connexion à la DB.
         $db = $this->connectDB($reading);        
         // On prépare la requête
         $statement = $db->prepare($request);
         // On l'exécute
         $statement->execute($requestParameters);
-        // On fait le matching
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);        
+        
+        // On fait le matching si lecture
+        if ($reading){
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);        
+        }
+        // Sinon on compte le nb de lignes affectées par la requête
+        else{
+            $result = $statement->rowCount();
+        }
         // Fermeture de la DB
         unset($db);        
         // Renvoi du résultat

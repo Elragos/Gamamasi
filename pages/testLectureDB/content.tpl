@@ -3,7 +3,10 @@
     {foreach $clientResults as $client}
         {* On a des résultats *}
         <div class="client">
-            {$client.nom} {$client.prenom}
+            {$client.nom} {$client.prenom} mis à jour le {$client.timestamp_creation_fiche}
+            <a class="client-update" data-client-id="{$client.id}" href="#">
+                Mise à jour
+            </a>
         </div>
     {foreachelse}
         {* On a aucun résultat *}
