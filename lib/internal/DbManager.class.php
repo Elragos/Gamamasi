@@ -101,8 +101,11 @@ class DbManager {
             $user = $this->DbReaderLogin;
             $pass = $this->DbReaderPassword;
         }
-        // Sinon, mode écriture
-        return new PDO('mysql:host=' . $this->DbHost . ":" . $this->DbPort . ";dbname=" . $this->DbName, $user, $pass);
+        // Sinon, mode écriture 
+        
+        // Ouverture de la connexion
+        return new PDO('mysql:host=' . $this->DbHost . ":" . $this->DbPort . ";dbname=" . $this->DbName, $user, $pass, 
+            array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));  // On indique qu'on travaille en UTF8
     }
     
     /**
@@ -115,7 +118,9 @@ class DbManager {
         // Déclaration du résultat
         $result = false;
         // Connexion à la DB.
-        $db = $this->connectDB($reading);        
+        $db = $this->connectDB($reading);      
+        
+        
         // On prépare la requête
         $statement = $db->prepare($request);
         // On l'exécute
