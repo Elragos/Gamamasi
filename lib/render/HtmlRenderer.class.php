@@ -32,6 +32,7 @@ class HtmlRenderer implements Renderer {
         $this->smarty->setCacheDir(SMARTY_CACHE_FOLDER . DIRECTORY_SEPARATOR . "result");
         // Spécifier l'endroi où mettre les pages compilés 
         $this->smarty->setCompileDir(SMARTY_CACHE_FOLDER . DIRECTORY_SEPARATOR ."compile");
+        // Rajouter la fonction générant le chemin absolut d'une page
     }
     
     /**
@@ -100,4 +101,27 @@ class HtmlRenderer implements Renderer {
         // Afficher le template
         return $this->smarty->fetch($this->pageLayout);
     }
+}
+/**
+ * Fonction de transition pour récupérer l'URL de la page demandée.
+ * 
+ * @param Array $params Les paramètres définis dans le template.
+ * @throws InvalidArgumentException Si la page n'est pas défini.
+ */
+function smarty_function_absoluteURL($params){
+    // Récupérer les paramètres
+    extract($params);
+    
+    // Si la page n'est pas défini
+    if(!isset($page) || empty($page)){
+        // Erreur 
+        throw new InvalidArgumentException("Page must be specified");
+    }
+    // Si l'action n'est pas défini
+    if(!isset($action) || empty($action)){
+        // On la défini à false
+        $action = false;
+    }
+    
+    return getAbsoluteURL($page, $action);
 }

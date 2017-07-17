@@ -126,13 +126,21 @@ class DbManager {
         // On l'exécute
         $statement->execute($requestParameters);
         
+        var_dump($statement->errorInfo());
+        
         // On fait le matching si lecture
         if ($reading){
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);        
         }
-        // Sinon on compte le nb de lignes affectées par la requête
+        // Sinon 
         else{
-            $result = $statement->rowCount();
+            // On récupère le dernier ID inséré
+            $result = $db->lastInsertId();
+            // Si aucun
+            if ($result == 0){
+                // On compte le nb de lignes affectées par la requête
+                $result = $statement->rowCount();
+            }
         }
         // Fermeture de la DB
         unset($db);        

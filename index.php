@@ -1,9 +1,13 @@
 <?php
+// Charger les librairies
+require("lib/includes.php");
+
 // Initialiser la session PHP
 session_start();
 
-// Charger les librairies
-require("lib/tools.php");
+// Charger la configuration
+require("lib/config.php");
+
 /* Utile pour debugger les formulaires 
 echo("paramètres GET : ");
 var_dump($_GET);
@@ -55,7 +59,7 @@ try{
     // Si l'initialisation du template a échoué
     if (!$_SESSION["RENDER_MANAGER"]->setPage($pageToShow)){
         // Afficher une page d'erreur 404
-        $_SESSION["RENDER_MANAGER"]->setPage("erreur404");
+        $_SESSION["RENDER_MANAGER"]->setPage("internal/erreur404");
     }
 }
 // En cas d'erreur
@@ -66,7 +70,7 @@ catch(Exception $ex){
     // Indiquer l'utilisation du moteur HTML
     $_SESSION["RENDER_MANAGER"]->currentRenderEngine = RenderManager::RENDER_HTML;
 
-    $_SESSION["RENDER_MANAGER"]->setPage("erreur500");
+    $_SESSION["RENDER_MANAGER"]->setPage("internal/erreur500");
 }
 
 // Afficher le résultat

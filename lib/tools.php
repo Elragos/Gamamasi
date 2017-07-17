@@ -1,11 +1,7 @@
 <?php
-    require 'internal/variables.php';
-    require 'internal/DbManager.class.php';
-    require 'config.php';
-    require 'render/RenderManager.class.php';
-    
     /**
      * Vérifier si la chaîne spécifiée commence par une autre chaîne.
+     * 
      * @param string $haystack Chaîne où chercher.
      * @param string $needle Chaîne à trouver.
      * @return bool <code>true</code> si trouvé, <code>false</code> sinon.
@@ -18,6 +14,7 @@
     
     /**
      * Logger une exception dans les fichiers de logs.
+     * 
      * @param Exception $exception Exception générée
      */
     function logException($exception){
@@ -35,4 +32,15 @@
         
         // Ajouter à la fin du fichier, ou le créer si inexistant
         file_put_contents($logFile, $formattedError, FILE_APPEND);
-    } 
+    }
+    
+    /**
+     * Renvoie l'URL absolue de la page demandée.
+     * 
+     * @param string $page La page demandée.
+     * @param bool $action Est-ce l'URL d'action sur la page ?
+     * @return URL L'URL ainsi générée.
+     */
+    function getAbsoluteURL($page, $action = false){        
+        return BASE_URL . $page . ($action ? ".do" : ".html");
+    }

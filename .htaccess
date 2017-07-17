@@ -10,11 +10,11 @@
     
     # Gestion de la page 404 #
     ##########################
-    ErrorDocument 404 "/wam&co/erreur404.html"
+    ErrorDocument 404 "/wam&co/internal/erreur404.html"
 
     # Règles de redirection #
     #########################
-    # Accès classique à une page
+    # Accès classique à une page HTML
     RewriteRule "^(.+)\.html?$" "index.php?page=$1\&%{QUERY_STRING}" [NC,L]
     RewriteRule "^(.+)\.html$" "index.php?page=$1" [L]
     # Accès à une page en AJAX
