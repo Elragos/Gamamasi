@@ -1,6 +1,16 @@
 <div id="content-profil">
     <h1>Profil Client</h1><br>
-    <a href="accueil.html">accueil</a> | <a href="espace_client.html">espace client</a> | <a href="espace_reservation.html">espace reservation</a> | <a href="synthese_client.html">synthèse</a> | profil | <a href="factures.html">factures</a><p>
+    <a href="accueil.html">accueil</a> | 
+    <a href="{absoluteURL page="espaceClient/index"}">espace client</a> | 
+    <a href="espace_reservation.html">espace reservation</a> |
+    <a href="synthese_client.html">synthèse</a> |
+    profil |
+    <a href="factures.html">factures</a>
+    {if $customer->id != 0}
+        <a href="{absoluteURL page="espaceClient/deconnexion"}">Déconnexion</a>
+    {/if}
+    
+    
     <form action="{absoluteURL page="espaceClient/profil" action=true}" method="POST">
         <fieldset>
             <legend>identité</legend>

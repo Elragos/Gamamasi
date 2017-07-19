@@ -16,7 +16,7 @@
             </div>
         {/if}
     </form>
-    <form action="{absoluteURL page="espaceClient/creation"}" method="POST">
+    <form action="{absoluteURL page="espaceClient/profil"}" method="POST">
         <fieldset>
             <h2>Creation d'un Wam space</h2><br>
             <input type="submit" value=".:: Creer ::."/>
