@@ -125,8 +125,8 @@ class DbManager {
         $statement = $db->prepare($request);
         // On l'exécute
         $statement->execute($requestParameters);
-        
-        var_dump($statement->errorInfo());
+
+        // var_dump($statement->errorInfo());
         
         // On fait le matching si lecture
         if ($reading){

@@ -4,8 +4,9 @@
     require 'internal/variables.php';
     require 'internal/DbManager.class.php';
     // Chargement des classes Objets DB
-    require 'classes/Address.class.php';
-    require 'classes/Customer.class.php';
+    require 'classes/Adresse.class.php';
+    require 'classes/SecteurActivite.class.php';
+    require 'classes/Client.class.php';
     // Chargement du moteur de rendu
     require 'render/RenderManager.class.php';
     

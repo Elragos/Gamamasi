@@ -1,15 +1,17 @@
 <?php
 
 // Créer un objet vide, pour création
-$customer = new Customer("", "", "", "", "", null, new Address("", "", ""));
+$client = new Client("", "", "", "", "", new Adresse("", "", ""));
 
 // Si on a un client en session
-if (Customer::hasActiveSession()){
-    $customer = Customer::getActiveSession();
+if (Client::sessionActiveExistante()){
+    // Récupérer le client de la session
+    $client = Client::recupererSessionActive();
 }
 
 $_SESSION["RENDER_MANAGER"]->pageDatas = array(
     // Indiquer le titre de la page
-    "title" => "Espace Client",
-    "customer" => $customer
+    "titre" => "Espace Client",
+    "client" => $client,
+    "secteursActivite" => SecteurActivite::chargerTout()
 );

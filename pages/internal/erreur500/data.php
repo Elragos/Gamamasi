@@ -5,5 +5,5 @@ header('HTTP/1.0 500 Internal Server Error', true, 500);
 
 $_SESSION["RENDER_MANAGER"]->pageDatas = array(
     // Indiquer le titre de la page
-    "title" => "Erreur serveur",
+    "titre" => "Erreur serveur",
 );

@@ -5,5 +5,5 @@ header('HTTP/1.0 404 Page Not Found', true, 404);
 
 $_SESSION["RENDER_MANAGER"]->pageDatas = array(
     // Indiquer le titre de la page
-    "title" => "Page Introuvable",
+    "titre" => "Page Introuvable",
 );

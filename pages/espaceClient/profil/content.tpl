@@ -6,7 +6,7 @@
     <a href="synthese_client.html">synthèse</a> |
     profil |
     <a href="factures.html">factures</a>
-    {if $customer->id != 0}
+    {if $client->id != 0}
         <a href="{absoluteURL page="espaceClient/deconnexion"}">Déconnexion</a>
     {/if}
     
@@ -14,93 +14,99 @@
     <form action="{absoluteURL page="espaceClient/profil" action=true}" method="POST">
         <fieldset>
             <legend>identité</legend>
-            <label for="lastname">
+            <label for="Nom">
                 Nom *
             </label>
-            <input type="text" id="lastname" name="lastname" value="{$customer->lastname}" required />
+            <input type="text" id="Nom" name="Nom" value="{$client->nom}" required />
             <br />
-            <label for="firstname">
+            <label for="Prenom">
                 Prénom *
             </label>
-            <input type="text" id="firstname" name="firstname" value="{$customer->firstname}" required />
+            <input type="text" id="Prenom" name="Prenom" value="{$client->prenom}" required />
             <br />
-            <label for="birthdate">
+            <label for="DateNaissance">
                 Date de naissance
             </label>
-            <input type="date" id="birthdate" name="birthdate"  value="{$customer->birthDate|date_format:"%Y-%m-%d"}" />
+            <input type="date" id="DateNaissance" name="DateNaissance"  value="{$client->dateNaissance|date_format:"%Y-%m-%d"}" />
+            
+            <br />
+            <label for="IdSecteurActivite">
+                Secteur d'activité
+            </label>
+            <select id="IdSecteurActivite" name="IdSecteurActivite">
+                <option value="0"> -- Non précisé -- </option>
+                {foreach from=$secteursActivite item=secteur}
+                    <option value="{$secteur->id}" {if $client->secteurActivite != null && $client->secteurActivite == $secteur->id}selected{/if} >
+                        {$secteur->nom}
+                    </option>
+                {/foreach}
+            </select>
         </fieldset>
         <p>
         <fieldset>
             <legend>wam</legend>
-            <label for="login">
-                Identifiant *
-            </label>
-            <input type="text" id="login" name="login" value="{$customer->login}" required />
-            <br />
-            <label for="password">
+            <label for="Password">
                 Mot de passe
-                {if $customer->id != 0}
+                {if $client->id != 0}
                     (Laisser vide pour ne pas modifier)
+                {else}
+                    *
                 {/if}
+                
             </label>
-            <input type="password" id="password" name="password"  />
+            <input type="password" id="Password" name="Password" {if $client->id == 0}required{/if}  />
         </fieldset>
         <p>
         <fieldset>
             <legend>contacts</legend>
-            <label for="phone">
+            <label for="Telephone">
                 Téléphone
             </label>
-            <input type="text" id="phone" name="phone" value="{$customer->phone}" />
+            <input type="text" id="Telephone" name="Telephone" value="{$client->telephone}" />
             <br />
-            <label for="email">
+            <label for="Mail">
                 Mail *
             </label>
-            <input type="text" id="email" name="email" value="{$customer->email}" required />
+            <input type="text" id="Mail" name="Mail" value="{$client->mail}" required />
         </fieldset>
         <p>
         <fieldset>
             <legend>adresse</legend>
-            <label for="addressLine1">
+            <label for="Adresse1">
                 Addresse *
             </label>
-            <input type="text" id="addressLine1" name="addressLine1" value="{$customer->address->line1}" required />
+            <input type="text" id="Adresse1" name="Adresse1" value="{$client->adresse->ligne1}" required />
             <br />
-            <label for="addressLine2">
+            <label for="Adresse2">
                 Complément d'adresse 
             </label>
-            <input type="text" id="addressLine2" name="addressLine2" value="{$customer->address->line2}" />
-            <input type="text" id="addressLine3" name="addressLine3" value="{$customer->address->line3}" />
+            <input type="text" id="Adresse2" name="Adresse2" value="{$client->adresse->ligne2}" />
+            <input type="text" id="Adresse3" name="Adresse3" value="{$client->adresse->ligne3}" />
             <br />
-            <label for="zipcode">
+            <label for="CodePostal">
                 Code Postal *
             </label>
-            <input type="text" id="zipCode" name="zipCode" value="{$customer->address->zipCode}" required />
+            <input type="text" id="CodePostal" name="CodePostal" value="{$client->adresse->codePostal}" required />
             <br />
-            <label for="town">
+            <label for="Ville">
                 Ville *
             </label>
-            <input type="text" id="town" name="town" value="{$customer->address->town}" required />
+            <input type="text" id="Ville" name="Ville" value="{$client->adresse->ville}" required />
             <br />
         </fieldset>
-            
-        <!--
-        <p>
+
         <fieldset>
             <legend>société</legend>
-            raison sociale: <input type="text" value="1 rue de l'Or" disabled/><a href=""><img src="{$rootURL}ressources/images/edit.png" style="heigth:16px;width:16px"></img></a><br>
-            siret: <input type="text" value="78978897300020" disabled/><a href=""><img src="{$rootURL}ressources/images/edit.png" style="heigth:16px;width:16px"></img></a><br>
-            dirigeant: <input type="text" value="E. Ruciak" disabled/><a href=""><img src="{$rootURL}ressources/images/edit.png" style="heigth:16px;width:16px"></img></a><br>
-            ligne 1: <input type="text" value="322 rue de Lannoy" disabled/><a href=""><img src="{$rootURL}ressources/images/edit.png" style="heigth:16px;width:16px"></img></a><br>
-            ligne 2: <input type="text" value="" disabled/><a href=""><img src="{$rootURL}ressources/images/edit.png" style="heigth:16px;width:16px"></img></a><br>
-            ligne 3: <input type="text" value="" disabled/><a href=""><img src="{$rootURL}ressources/images/edit.png" style="heigth:16px;width:16px"></img></a><br>
-            supplement: <input type="text" value="" disabled/><a href=""><img src="{$rootURL}ressources/images/edit.png" style="heigth:16px;width:16px"></img></a><br>
-            code postal: <input type="text" value="59100" disabled/><a href=""><img src="{$rootURL}ressources/images/edit.png" style="heigth:16px;width:16px"></img></a><br>
-            ville: <input type="text" value="ROUBAIX" disabled/><a href=""><img src="{$rootURL}ressources/images/edit.png" style="heigth:16px;width:16px"></img></a><br>
+             <label for="SIRET">
+                SIRET
+            </label>
+            <input type="text" id="SIRET" name="SIRET" value="{$client->SIRET}" />
+             <label for="RaisonSociale">
+                Raison sociale
+            </label>
+            <input type="text" id="RaisonSociale" name="RaisonSociale" value="{$client->adresse->codePostal}" />
         </fieldset>
-        <p>
-        rattachement ???
-        -->
+
         <input type="submit" value="Valider" />
     </form>
 </div>

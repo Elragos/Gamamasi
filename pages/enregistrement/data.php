@@ -2,5 +2,5 @@
 
 $_SESSION["RENDER_MANAGER"]->pageDatas = array(
     // Indiquer le titre de la page
-    "title" => "Espace Client",
+    "titre" => "Espace Client",
 );
