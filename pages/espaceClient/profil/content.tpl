@@ -36,7 +36,7 @@
             <select id="IdSecteurActivite" name="IdSecteurActivite">
                 <option value="0"> -- Non précisé -- </option>
                 {foreach from=$secteursActivite item=secteur}
-                    <option value="{$secteur->id}" {if $client->secteurActivite != null && $client->secteurActivite == $secteur->id}selected{/if} >
+                    <option value="{$secteur->id}" {if $client->secteurActivite != null && $client->secteurActivite->id == $secteur->id}selected{/if} >
                         {$secteur->nom}
                     </option>
                 {/foreach}
@@ -104,7 +104,7 @@
              <label for="RaisonSociale">
                 Raison sociale
             </label>
-            <input type="text" id="RaisonSociale" name="RaisonSociale" value="{$client->adresse->codePostal}" />
+            <input type="text" id="RaisonSociale" name="RaisonSociale" value="{$client->raisonSociale}" />
         </fieldset>
 
         <input type="submit" value="Valider" />

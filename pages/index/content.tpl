@@ -13,14 +13,6 @@
         Tester l'erreur 500
     </a>
     <br />
-    <a href="{absoluteURL page="testLectureDB"}">
-        Tester la connexion à la DB
-    </a>
-    <br />
-    <a href="{absoluteURL page="testLectureDBV2"}">
-        Tester la connexion à la DB en mode objet
-    </a>
-    <br />
     <a href="{absoluteURL page="espaceClient/index"}">
         Tester l'espace client
     </a>

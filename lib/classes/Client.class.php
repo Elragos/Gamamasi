@@ -175,30 +175,31 @@ class Client {
         // On exécute la requête de mise à jour, en récupérant le nb de lignes modifiés
         $count = $_SESSION["DB_MANAGER"]->exec(
             // param 1: requête préparée
-            "UPDATE `wam_client` SET"
-                . "Nom = :Nom,"
-                . "Prenom = :Prenom,"
-                . "DateNaissance = :DateNaissance,"
-                . "Password = :Password,"
-                . "Telephone = :Telephone,"
-                . "Mail = :Mail,"
-                . "Adresse1 = :Adresse1,"
-                . "Adresse2 = :Adresse2,"
-                . "Adresse3 = :Adresse3,"
-                . "CodePostal = :CodePostal,"
-                . "Ville = :Ville,"
+            "UPDATE `wam_client` SET "
+                . "Nom = :Nom, "
+                . "Prenom = :Prenom, "
+                . "DateNaissance = :DateNaissance, "
+                . "Password = :Password, "
+                . "Telephone = :Telephone, "
+                . "Mail = :Mail, "
+                . "Adresse1 = :Adresse1, "
+                . "Adresse2 = :Adresse2, "
+                . "Adresse3 = :Adresse3, "
+                . "CodePostal = :CodePostal, "
+                . "Ville = :Ville, "
                 . "DateCreation = :DateCreation, "
-                . "DateModification = :DateModification,"
-                . "SIRET = :SIRET,"
-                . "raison_sociale = :raison_sociale,"
-                . "visible = visible,"
-                . "Id_secteur_activite = :Id_secteur_activite"
+                . "DateModification = :DateModification, "
+                . "SIRET = :SIRET, "
+                . "raison_sociale = :raison_sociale, "
+                . "visible = :visible, "
+                . "Id_secteur_activite = :Id_secteur_activite "
             . "WHERE`IdClient`= :id;",
             // param 2: valeurs issues du formulaire
             $this->parametresSQL(),
             // param 3: true = lecture, false = écriture
             false
         );
+
         // L'insertion s'est bien passé si on a exactement 1 ligne inséré
         return $count == 1;
     }
@@ -227,7 +228,7 @@ class Client {
             "DateCreation" => $this->dateCreation->format("Y-m-d H:i:s"),
             "DateModification" => $this->dateModification->format("Y-m-d H:i:s"),
             "visible" => $this->visible,
-            "Id_secteur_activite" => $this->secteurActivite->ID
+            "Id_secteur_activite" => $this->secteurActivite == null ? null : $this->secteurActivite->id
         );
         // Ajouter l'identifiant DB si demandé
         if ($addId){
@@ -325,7 +326,7 @@ class Client {
      */
     private static function chargerDepuisRetourSQL($datas){        
         // On créé l'objet adresse
-        $adresse = new Address(
+        $adresse = new Adresse(
             $datas["Adresse1"],
             $datas["CodePostal"],
             $datas["Ville"],
@@ -403,7 +404,7 @@ class Client {
             // Si le mot de passe n'a pas été renseigné
             if (empty($client->password)){
                 // Récupérer celui de la session
-                $client->password = $client->password;
+                $client->password = $sessionClient->password;
             }
             
             // Récupérer la date de création
