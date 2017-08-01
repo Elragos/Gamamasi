@@ -91,13 +91,25 @@ class HtmlRenderer implements Renderer {
         // Assigner le js relatif à la page s'il existe
         $this->smarty->assign("js", file_exists($realPagePath . "script.js") 
             ? file_get_contents($realPagePath . "script.js") : "", true);
+        
+        // Assigner le menu relatif à la page
+        $menu = null;
+        // Si menu spécifique à la page
+        if(file_exists( $realPagePath . "menu.tpl")){
+            $menu = $realPagePath . "menu.tpl";
+        }
+        // Si menu spécifique à la page parente
+        else if (file_exists( $realPagePath . ".." . DIRECTORY_SEPARATOR . "menu.tpl" )) {
+            $menu = realpath($realPagePath . ".." . DIRECTORY_SEPARATOR . "menu.tpl");
+        }
+        $this->smarty->assign("menuContent", $menu, true);
 
         // Assigner le corps de page
         $this->smarty->assign("bodyContent", $realPagePath . "content.tpl");
 
         // Assigner la racine du site
         $this->smarty->assign("rootURL", BASE_URL);
-        
+
         // Afficher le template
         return $this->smarty->fetch($this->pageLayout);
     }

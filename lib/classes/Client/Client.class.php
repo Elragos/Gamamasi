@@ -46,6 +46,13 @@ class Client {
      * @var string 
      */
     public $telephone;
+    
+    /**
+     * Est-ce une société ?
+     * @var bool 
+     */
+    public $estSociete;
+    
     /**
      * SIRET de l'entreprise
      * @var string
@@ -100,18 +107,36 @@ class Client {
      * @param bool $visible Téléphone de l'utilisateur.
      * @param SecteurActivite $secteurActivite Secteur d'activié du client.
      */
-    public function __construct($nom, $prenom, $mail, $password, $dateNaissance, $adresse, $telephone = null, $id = 0,
-            $SIRET = null, $raisonSociale = null, $dateCreation = null, $dateModification = null, $visible = true, $secteurActivite = null) {
+    public function __construct($nom, $prenom, $mail, $password, $dateNaissance, $adresse,
+            $telephone = null, $id = 0, $estSociete = false, $SIRET = null, $raisonSociale = null,
+            $dateCreation = null, $dateModification = null, $visible = true, $secteurActivite = null) {
         $this->id = $id;
         $this->nom = $nom;
         $this->prenom = $prenom;
         $this->mail = $mail;
         $this->password = $password;
-        $this->dateNaissance = $dateNaissance;
         $this->adresse = $adresse;
         $this->telephone = $telephone;
-        $this->SIRET = $SIRET;
-        $this->raisonSociale = $raisonSociale;
+        // Si on désire une société
+        if ($estSociete){
+            // On inique que le client est une société
+            $this->estSociete = true;
+            //On vide la date de naissance
+            $this->dateNaissance = null;
+            // On renseigne le SIRET et la raison sociale
+            $this->SIRET = $SIRET;
+            $this->raisonSociale = $raisonSociale;
+        }
+        // Sinon
+        else{
+            // On inique un particulier
+            $this->estSociete = false;
+            // On rensigne la date de naissance
+            $this->dateNaissance = $dateNaissance;
+            // On vide le SIRET et la raison sociale
+            $this->SIRET = null;            
+            $this->raisonSociale = null;
+        }
         $this->dateCreation = $dateCreation;
         $this->dateModification = $dateModification;
         $this->visible = $visible;
@@ -146,11 +171,17 @@ class Client {
         $id = $_SESSION["DB_MANAGER"]->exec(
             // param 1: requête préparée
             "INSERT INTO wam_client("
-                . "Nom, Prenom, DateNaissance, Password, Telephone, Mail, Adresse1, Adresse2, Adresse3, CodePostal, Ville,"
-                . "DateCreation, DateModification, SIRET, raison_sociale, visible, Id_secteur_activite"
+                . "Nom, Prenom, DateNaissance, Password, Telephone, Mail, "
+                . "Adresse1, Adresse2, Adresse3, CodePostal, Ville, "
+                . "DateCreation, DateModification, "
+                . "EstSociete, SIRET, raison_sociale, "
+                . "visible, Id_secteur_activite "
             . ") VALUES ("
-                . ":Nom, :Prenom, :DateNaissance, :Password, :Telephone, :Mail, :Adresse1, :Adresse2, :Adresse3, :CodePostal, :Ville,"
-                . ":DateCreation, :DateModification, :SIRET, :raison_sociale, :visible, :Id_secteur_activite"
+                . ":Nom, :Prenom, :DateNaissance, :Password, :Telephone, :Mail,"
+                . ":Adresse1, :Adresse2, :Adresse3, :CodePostal, :Ville, "
+                . ":DateCreation, :DateModification, "
+                . ":EstSociete, :SIRET, :raison_sociale, "
+                . ":visible, :Id_secteur_activite "
             . ");",
             // param 2: valeurs issues du formulaire
             $this->parametresSQL(false),
@@ -172,6 +203,9 @@ class Client {
      * @return bool <code>true</code> si réussi, <code>false</code> sinon.
      */
     private function miseAJour(){
+        // On modifie la date de dernière modification
+        $this->dateModification = new DateTime();
+
         // On exécute la requête de mise à jour, en récupérant le nb de lignes modifiés
         $count = $_SESSION["DB_MANAGER"]->exec(
             // param 1: requête préparée
@@ -189,11 +223,12 @@ class Client {
                 . "Ville = :Ville, "
                 . "DateCreation = :DateCreation, "
                 . "DateModification = :DateModification, "
+                . "EstSociete = :EstSociete, "
                 . "SIRET = :SIRET, "
                 . "raison_sociale = :raison_sociale, "
                 . "visible = :visible, "
                 . "Id_secteur_activite = :Id_secteur_activite "
-            . "WHERE`IdClient`= :id;",
+            . "WHERE IdClient = :id;",
             // param 2: valeurs issues du formulaire
             $this->parametresSQL(),
             // param 3: true = lecture, false = écriture
@@ -217,17 +252,18 @@ class Client {
             "Mail" => $this->mail,
             "Password" => $this->password,
             "Telephone" => $this->telephone,
-            "DateNaissance" => $this->dateNaissance->format("Y-m-d"),
+            "DateNaissance" => $this->dateNaissance != null ? $this->dateNaissance->format("Y-m-d") : null,
             "Adresse1" => $this->adresse->ligne1,
             "Adresse2" => $this->adresse->ligne2,
             "Adresse3" => $this->adresse->ligne3,
             "CodePostal" => $this->adresse->codePostal,
             "Ville" => $this->adresse->ville,
+            "EstSociete" => $this->estSociete ? "1" : "0",
             "SIRET" => $this->SIRET,
             "raison_sociale" => $this->raisonSociale,
             "DateCreation" => $this->dateCreation->format("Y-m-d H:i:s"),
             "DateModification" => $this->dateModification->format("Y-m-d H:i:s"),
-            "visible" => $this->visible,
+            "visible" => $this->visible ? "1" : "0",
             "Id_secteur_activite" => $this->secteurActivite == null ? null : $this->secteurActivite->id
         );
         // Ajouter l'identifiant DB si demandé
@@ -344,11 +380,12 @@ class Client {
             $adresse,
             $datas["Telephone"],
             $datas["IdClient"],
+            $datas["EstSociete"] == 1,
             $datas["SIRET"],
             $datas["raison_sociale"],
             DateTime::createFromFormat("Y-m-d H:i:s", $datas["DateCreation"]),
             DateTime::createFromFormat("Y-m-d H:i:s", $datas["DateModification"]),
-            $datas["visible"],
+            $datas["visible"] == 1,
             SecteurActivite::charger($datas["Id_secteur_activite"])
         );
     }
@@ -441,10 +478,11 @@ class Client {
             $requestParameters["Prenom"],
             $requestParameters["Mail"],
             $requestParameters["Password"],
-            DateTime::createFromFormat("Y-m-d", $requestParameters["DateNaissance"]),
+            $requestParameters["DateNaissance"] != null ? DateTime::createFromFormat("Y-m-d", $requestParameters["DateNaissance"]) : null,
             $adresse,
             $requestParameters["Telephone"],
             0, // Identifiant DB
+            isset($requestParameters["EstSociete"]),
             $requestParameters["SIRET"],
             $requestParameters["RaisonSociale"],
             new DateTime(), // Date de création
@@ -469,13 +507,13 @@ class Client {
      */
     public function __toString() {
         return $this->prenom . " " . $this->nom . "(" . $this->mail . ")\n"
-            . "Né le " . $this->dateNaissance->format("d/m/Y") . '\n'
+            . $this->estSociete ? "" :  ("Né le " . $this->dateNaissance->format("d/m/Y") . '\n')
             . "Créé le " . $this->dateCreation->format("d/m/Y") . " à " . $this->birthDate->format("H/i/s") . '\n'
             . "Modifié le " . $this->dateModification->format("d/m/Y") . " à " . $this->birthDate->format("H/i/s") . '\n'
             . "Email : " . $this->mail . "\n"
             . "Adresse : " . $this->adresse . "\n"
-            . "SIRET : " . $this->SIRET . "\n"
-            . "Raison Social : " . $this->raisonSociale . "\n"
+            . $this->estSociete ? ("SIRET : " . $this->SIRET . "\n"
+            . "Raison Social : " . $this->raisonSociale . "\n") : ""
             . "Visible: " . $this->visible . "\n"
             . "Secteur d'activité : " . $this->secteurActivite;
     }

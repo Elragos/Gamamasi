@@ -3,11 +3,11 @@
 // Si on a pas de client en session
 if (!Client::sessionActiveExistante()){
     // On récupère les identifiants de connexion
-    $login = filter_input(INPUT_POST, "login", FILTER_SANITIZE_STRING);
+    $mail = filter_input(INPUT_POST, "mail", FILTER_SANITIZE_STRING);
     $password = filter_input(INPUT_POST, "pwd", FILTER_SANITIZE_STRING);
 
     // On récupère le client correspondant
-    $client = Client::authentfication($login, $password);
+    $client = Client::authentfication($mail, $password);
 
     // Si non trouvé
     if ($client == null){

@@ -4,7 +4,7 @@
 $client = Client::recupererDepuisFormulaireHTML();
 
 // Sauvegarder le client
-if ($client->sauvegarde()){
+if ($client->sauvegarde()){    
    // Mettre à jour la session si la sauvegarde a réussi
     $client->mettreEnSession(); 
 }

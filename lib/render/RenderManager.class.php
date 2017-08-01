@@ -15,7 +15,7 @@ class RenderManager {
      * Chemin vers le répertoire de la page.
      * @var string
      */
-    public $pageDir;
+    private $pageDir;
     
     /**
      * Moteur de rendu HTML.

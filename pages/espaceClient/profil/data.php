@@ -11,7 +11,8 @@ if (Client::sessionActiveExistante()){
 
 $_SESSION["RENDER_MANAGER"]->pageDatas = array(
     // Indiquer le titre de la page
-    "titre" => "Espace Client",
+    "titre" => "Mon Espace Client - Mon Profil",
     "client" => $client,
+    "activeMenu" => "profil",
     "secteursActivite" => SecteurActivite::chargerTout()
 );

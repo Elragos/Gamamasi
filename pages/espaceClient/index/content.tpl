@@ -1,12 +1,10 @@
-<div id="content-espace_client">
-    <h1>Espace Client</h1><br>
-    <a href="/accueil.html">accueil</a> | espace client | <a href="/espace_reservation.html">espace reservation</a><p>
+<div id="client-connexion">
     <form action="{absoluteURL page="espaceClient/index" action=true}" method="POST">
         <fieldset>
             <h2>Connexion</h2><br>
-            <label for="login">identifiant</label>
-            <input type="text" id="login" name="login" /><br>
-            <label for="pwd">mot de passe</label>
+            <label for="mail">Adresse Mail</label>
+            <input type="text" id="login" name="mail" /><br>
+            <label for="pwd">Mot de passe</label>
             <input type="password" id="pwd" name="pwd" /><br><br>
             <input type="submit" value=".:: GO ::."/>
         </fieldset>

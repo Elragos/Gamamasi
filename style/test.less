@@ -14,4 +14,57 @@ body{
             color: black;
         }
     }
+    
+    .content-form-input{
+        height: 25px;
+        label{
+            float: left;
+        }
+
+        input {
+            float: right;
+            width: 250px;
+        }
+    }
+    
+    table{
+        border: 1px solid black;
+        width: 100%;
+    }
+    
+    #overlay{
+        background-color:rgba(0,0,0,0.6);
+        display: none;
+        height: 100%;
+        left: 0;
+        margin: auto;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 10;            
+    }
+    
+    #client-membre-popin{
+        background-color: #c9d8ef;
+        border: 1px solid black;
+        display: none;
+        height: 170px;
+        left: ~"calc(50% - 200px)";
+        padding: 10px;
+        position: absolute;
+        top: ~"calc(50% - 85px)";
+        width: 400px;
+        z-index: 20;
+        
+        .client-membre-popin-toolbar{
+            display: block;
+            height: 20px;
+            .client-membre-popin-toolbar-close{
+                padding: 1px;
+                position: absolute;
+                right: 14px;
+                width: 12px;
+            }
+        }
+    }
 }
