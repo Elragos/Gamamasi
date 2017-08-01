@@ -50,6 +50,12 @@ class Membre {
     public $secteurActivite;
     
     /**
+     * Est-ce que le membre est actif ?
+     * @var bool
+     */
+    public $actif;
+    
+    /**
      * Constructeur
      * @param String $nom Nom du membre.
      * @param String $prenom Prénom du membre.
@@ -60,7 +66,7 @@ class Membre {
      * @param type $secteurActivite
      */
     public function __construct($nom, $prenom, $mail, $client, $typeMembre,
-        $id = 0, $secteurActivite = null) {
+        $id = 0, $secteurActivite = null, $actif = false )  {
         $this->nom = $nom;
         $this->prenom = $prenom;
         $this->mail = $mail;
@@ -68,23 +74,31 @@ class Membre {
         $this->typeMembre = $typeMembre;
         $this->id = $id;
         $this->secteurActivite = $secteurActivite;
+        $this->actif = $actif;
     }
     
         /**
      * Charger un  membre depuis son Identifiant DB.
      * 
-     * @param int $id Identifiant DB du client.
+     * @param int $id Identifiant DB du membre.
+     * @param int $idClient Identifiant DB du client dont dépend le membre.
+     * @param bool $actif Est-ce que le client est actif ?
      * @return Membre Le membre trouvé, ou null su non trouvé.
      */
-    public static function charger($id){
+    public static function charger($id, $idClient, $actif = true){
         // Déclaration du résultat
         $result = null;
         
         // Récupération des données du client
         $datas = $_SESSION["DB_MANAGER"]->exec(
-            "SELECT * FROM wam_membre WHERE Id_membre = :id",
+            "SELECT * FROM wam_membre WHERE "
+                . "Id_membre = :id "
+                . "AND IdClient = :idClient "
+                . "AND actif = :actif",
             array(
-                "id" => $id
+                "id" => $id,
+                "idClient" => $idClient,
+                "actif" => $actif ? "1" : "0"
             )
         );
        
@@ -100,18 +114,22 @@ class Membre {
     
     /**
      * Charger la liste complète des membres d'un client.
-     * 
+     * @param int $idClient Identifiant DB du client dont dépend le membre.
+     * @param bool $actif Est-ce que le client est actif ?
      * @return Array[Membre] La liste des types de membres dans la DB.
      */
-    public static function chargerTout($idClient){
+    public static function chargerTout($idClient, $actif = true){
         // Déclaration du résultat
         $result = array();
         
         // Récupération des données du client
         $datasList = $_SESSION["DB_MANAGER"]->exec(
-            "SELECT * FROM wam_membre WHERE IdClient = :idClient",
+            "SELECT * FROM wam_membre WHERE "
+                . "IdClient = :idClient "
+                . "AND actif = :actif",
             array(
-                "idClient" => $idClient
+                "idClient" => $idClient,
+                "actif" => $actif ? "1" : "0"
             )
         );
         
@@ -139,7 +157,8 @@ class Membre {
             Client::charger($datas["IdClient"]),
             TypeMembre::charger($datas["Id_type_membre"]),
             $datas["Id_membre"],
-            SecteurActivite::charger($datas["Id_secteur_activite"])
+            SecteurActivite::charger($datas["Id_secteur_activite"]),
+            $datas["actif"]
         );
     }
     
@@ -192,28 +211,45 @@ class Membre {
         return $id > 0;
     }
     /**
-     * Met à jour en DB l'utilisateur.
+     * Met à jour en DB le membre.
      * 
      * @return bool <code>true</code> si réussi, <code>false</code> sinon.
      */
     private function miseAJour(){
-        // On modifie la date de dernière modification
-        $this->dateModification = new DateTime();
-
         // On exécute la requête de mise à jour, en récupérant le nb de lignes modifiés
         $count = $_SESSION["DB_MANAGER"]->exec(
             // param 1: requête préparée
             "UPDATE wam_membre SET"
-                . " Id_membre = :Id_membre,"
-                . " Nom_membre = :Nom_membre,"
-                . " Prenom_membre = :Prenom_membre"
-                . " Mail = :Mail"
-                . " IdClient = :IdClient"
+                . " Nom_membre = :Nom_membre, "
+                . " Prenom_membre = :Prenom_membre, "
+                . " Mail = :Mail, "
                 . " Id_type_membre = :Id_type_membre,"
                 . " Id_secteur_activite = :Id_secteur_activite"
-            . " WHERE Id_membre = :id",
+            . " WHERE Id_membre = :id AND IdClient = :IdClient",
             // param 2: valeurs issues du formulaire
             $this->parametresSQL(),
+            // param 3: true = lecture, false = écriture
+            false
+        );
+
+        // L'insertion s'est bien passé si on a exactement 1 ligne inséré
+        return $count == 1;
+    }
+    
+    /**
+     * Supprimer logiquement le membre.
+     */
+    public function supprimer(){
+                // On exécute la requête de mise à jour, en récupérant le nb de lignes modifiés
+        $count = $_SESSION["DB_MANAGER"]->exec(
+            // param 1: requête préparée
+            "UPDATE wam_membre SET actif = 0"
+            . " WHERE Id_membre = :id AND IdClient = :IdClient",
+            // param 2: valeurs issues du formulaire
+            array(
+                "id" => $this->id,
+                "IdClient" => Client::recupererSessionActive()->id
+            ),
             // param 3: true = lecture, false = écriture
             false
         );

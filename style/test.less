@@ -41,7 +41,16 @@ body{
         position: fixed;
         top: 0;
         width: 100%;
-        z-index: 10;            
+        z-index: 10;
+        
+        #loader{               
+            background-color: #FFFFFF;
+            display: none;
+            left: ~"calc(50% - 35px)"; 
+            position: absolute;
+            top: ~"calc(50% - 35px)";;
+            width: 70px;   
+        }
     }
     
     #client-membre-popin{
@@ -56,10 +65,10 @@ body{
         width: 400px;
         z-index: 20;
         
-        .client-membre-popin-toolbar{
+        #client-membre-popin-toolbar{
             display: block;
             height: 20px;
-            .client-membre-popin-toolbar-close{
+            #client-membre-popin-toolbar-close{
                 padding: 1px;
                 position: absolute;
                 right: 14px;

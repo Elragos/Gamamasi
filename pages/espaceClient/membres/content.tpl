@@ -1,4 +1,4 @@
-<div id="client-membres">
+<div id="client-membre">
     <table>
         <thead>
             <tr>
@@ -18,13 +18,15 @@
                     Secteur d'activité
                 </th>
                 <th>
-                    Actions (en cours de construction)
+                    Actions
                 </th>
             </tr>
         </thead>
         <tbody>
             {foreach from=$membres item=membre}
-                <tr>
+                <tr data-membre-id="{$membre->id}" data-membre-nom="{$membre->nom}"
+                    data-membre-prenom="{$membre->prenom}" data-membre-mail="{$membre->mail}"
+                    data-membre-type="{$membre->typeMembre->id}" data-membre-secteur="{($membre->secteurActivite == null) ? '0' : $membre->secteurActivite->id}" >
                     <td>
                         {$membre->nom}
                     </td>
@@ -45,10 +47,10 @@
                         {/if}
                     </td>
                     <td>
-                        <button class="client-membres-modifier" data-membre-id="{$membre->id}">
+                        <button class="client-membre-modifier">
                             Modifier
                         </button>
-                        <button class="client-membres-supprimer" data-membre-id="{$membre->id}">
+                        <button class="client-membre-supprimer">
                             Supprimer
                         </button>
                     </td>
@@ -64,8 +66,8 @@
 </div>
 
 <div id="client-membre-popin">
-    <div class="client-membre-popin-toolbar">
-        <div class="client-membre-popin-toolbar-close">
+    <div id="client-membre-popin-toolbar">
+        <div id="client-membre-popin-toolbar-close">
             X
         </div>
     </div>
@@ -120,7 +122,9 @@
             </select>
         </div>
         <div class="content-form-input">
-            <input type="submit" value="Créer" />
+            <button type="submit">
+                Valider
+            </button>
         </div>
     </form>
 </div>
