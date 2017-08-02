@@ -65,9 +65,9 @@
     </button>
 </div>
 
-<div id="client-membre-popin">
-    <div id="client-membre-popin-toolbar">
-        <div id="client-membre-popin-toolbar-close">
+<div class="popin" id="client-membre-popin">
+    <div class="popin-toolbar">
+        <div class="popin-toolbar-close">
             X
         </div>
     </div>

@@ -17,6 +17,10 @@
         Tester l'espace client
     </a>
     <br />
+    <a href="{absoluteURL page="espaceAdmin/index"}">
+        Tester l'espace administrateur
+    </a>
+    <br />
     <form method="GET" action="{absoluteURL page="index" action=true}" id="testAjax">
         <input type="hidden" name="maVariable" value="existe" />
         <input id="sendAjax" type="submit" value="Tester formulaire GET" />

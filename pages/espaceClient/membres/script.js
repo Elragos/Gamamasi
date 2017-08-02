@@ -54,7 +54,7 @@ $(document).ready(function(){
             afficherLoader();
 
             $.ajax({
-                url: "supprimerMembre.do",
+                url: "membres/supprimer.do",
                 method: "POST",
                 data: {
                     "id" : ligne.attr("data-membre-id")
@@ -78,13 +78,15 @@ $(document).ready(function(){
         }
     });
     
-    // Fermer la popin au clic sur la croix
-    $("#client-membre-popin-toolbar-close").click(fermerPopinMembre);
-    
     // Fermer la popin si l'on clique en dehors de la popin
     $("#overlay").click(function(event){  
         // Si le clic n'est pas dans la popin
-        if($(event.target).closest('#client-membre-popin').length === 0){
+        if($(event.target).closest('.popin').length === 0){
+            // On ferme la popin
+            fermerPopinMembre();
+        }
+        // Si le clie est dans la zone de fermeture
+        if ($(event.target).closest('.popin-toolbar-close').length != 0){
             // On ferme la popin
             fermerPopinMembre();
         }
