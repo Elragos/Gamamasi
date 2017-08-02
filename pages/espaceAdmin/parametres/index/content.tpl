@@ -3,11 +3,6 @@
     
     <ul class="admin-param-list">
         <li class="admin-param-list-item">
-            <a href="{absoluteURL page="espaceAdmin/parametres/secteursActivites"}">
-                Secteurs d'activités
-            </a>
-        </li>
-        <li class="admin-param-list-item">
              <a href="#">
                  Types de membres
              </a>

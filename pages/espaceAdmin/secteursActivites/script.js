@@ -11,6 +11,8 @@ function ouvrirPopinSecteur(){
     $(".popin").show();
     // On réinitialise le formulaire de création membre
     $("#admin-secteur-popin form").get(0).reset();
+    // Fix pour la checkbox
+    $("#VisibiliteSecteur").removeAttr("checked");
 }
 
 $(document).ready(function(){    
