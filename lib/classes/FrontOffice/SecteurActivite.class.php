@@ -110,7 +110,7 @@ class SecteurActivite {
     }
     
     /**
-     * Sauvegarder le membre (gère l'insertion et la mise à jour)
+     * Sauvegarder le ecteur d'activité (gère l'insertion et la mise à jour)
      * 
      * @return bool <code>true</code> si réussi, <code>false</code> sinon.
      */
@@ -128,7 +128,7 @@ class SecteurActivite {
     }
     
     /**
-     * Ajoute en DB le membre.
+     * Ajoute en DB le secteur d'activité.
      * 
      * @return bool <code>true</code> si réussi, <code>false</code> sinon.
      */
@@ -156,7 +156,7 @@ class SecteurActivite {
         return $id > 0;
     }
     /**
-     * Met à jour en DB le membre.
+     * Met à jour en DB le secteur d'activité.
      * 
      * @return bool <code>true</code> si réussi, <code>false</code> sinon.
      */

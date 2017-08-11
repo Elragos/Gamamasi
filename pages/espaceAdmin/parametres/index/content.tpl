@@ -1,27 +1,26 @@
 <div id="admin-param-index">
-    Gestion des paramètres généraux de ma boutique
+    Gestion des paramètres généraux de ma boutique (espace superadmin)
     
     <ul class="admin-param-list">
         <li class="admin-param-list-item">
-             <a href="#">
-                 Types de membres
-             </a>
-         </li>
-        <li class="admin-param-list-item">
-             <a href="#">
-                Taux de TVA
-             </a>
+            <a href="{absoluteURL page="espaceAdmin/parametres/typesMembre"}">
+                Types de membres
+            </a>
         </li>
         <li class="admin-param-list-item">
-             <a href="#">
-                Gestion des options 
-             </a>
+            <a href="#">
+               Taux de TVA
+            </a>
         </li>
         <li class="admin-param-list-item">
-             <a href="#">
-                 Gestion des administrateurs
-             </a>
+            <a href="#">
+               Gestion des options 
+            </a>
         </li>
-    </ul>
-    
+        <li class="admin-param-list-item">
+            <a href="#">
+                Gestion des administrateurs
+            </a>
+        </li>
+    </ul>    
 </div>

@@ -23,8 +23,8 @@
                 Paramètres généraux
             </a>
             <ul class="admin-submenu-list">
-                <li class="admin-submenu-list-item {if isset($activeSubMenu) && $activeSubMenu == "typesMembres"}admin-submenu-list-item-active{/if}">
-                    <a href="#">
+                <li class="admin-submenu-list-item {if isset($activeSubMenu) && $activeSubMenu == "typesMembre"}admin-submenu-list-item-active{/if}">
+                    <a href="{absoluteURL page="espaceAdmin/parametres/typesMembre"}">
                         Types de membres
                     </a>
                 </li>

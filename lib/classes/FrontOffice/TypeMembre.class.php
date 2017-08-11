@@ -16,25 +16,33 @@ class TypeMembre {
      * @var string.
      */
     public $nom;
+    
+    /**
+     * Est-ce que ce type de membre est visible par les clients ?
+     * @var bool.
+     */
+    public $visible;
    
     /**
      * Constructeur.
      * 
      * @param int $id Identifiant DB du type de membre.
      * @param string $nom Nom du type de membre.
+     * @param bool $visible Est-ce que ce type de membre est visible par les clients ? 
      */
-    public function __construct($id, $nom) {
+    public function __construct($id, $nom, $visible = true) {
         $this->id = $id;
         $this->nom = $nom;
+        $this->visible = $visible;
     }
     
     /**
      * Récupérer le type de membre sous forme de chaîne de caractères.
      * 
-     * @return string Le secteur d'activité.
+     * @return string Le type de membre.
      */
     public function __toString() {
-        return $this->id . " : " . $this->nom;
+        return $this->id . " : " . $this->nom . "(" .$this->visible ? ("Visible") : ("Invisible") . ")"; 
     }
     
     /**
@@ -94,6 +102,115 @@ class TypeMembre {
      * @return TypeMembre Le type de membre ainsi créé.
      */
     private static function chargerDepuisRetourSQL($datas){        
-        return new TypeMembre($datas["Id_type_membre"], $datas["intitule"]);
+        return new TypeMembre(
+            $datas["Id_type_membre"],
+            $datas["intitule"],
+            $datas["visible"]
+        );
+    }
+    
+    /**
+     * Sauvegarder le type de membre (gère l'insertion et la mise à jour)
+     * 
+     * @return bool <code>true</code> si réussi, <code>false</code> sinon.
+     */
+    public function sauvegarde(){
+        // Si l'identifiant est défini
+        if ($this->id > 0){
+            // On met à jour la DB
+            return $this->miseAJour();
+        }
+        // Sinon
+        else{
+            // On insert en DB
+            return $this->insertion();
+        }
+    }
+    
+    /**
+     * Ajoute en DB le type de membre.
+     * 
+     * @return bool <code>true</code> si réussi, <code>false</code> sinon.
+     */
+    private function insertion(){       
+        // On exécute la requête d'insertion, en récupérant l'id d'insertion
+        $id = $_SESSION["DB_MANAGER"]->exec(
+            // param 1: requête préparée
+            "INSERT INTO wam_type_membre( "
+                . "intitule, visible"
+            . ") VALUES ("
+                . ":intitule, :visible"
+            . ");",
+            // param 2: valeurs issues du formulaire
+            $this->parametresSQL(true),
+            // param 3: true = lecture, false = écriture
+            false
+        );
+        
+        // Si la création a réussi
+        if ($id > 0){
+            // On récupère l'id nouvellement inséré en DB
+            $this->id = $id;
+        }
+        
+        return $id > 0;
+    }
+    /**
+     * Met à jour en DB le type de membre.
+     * 
+     * @return bool <code>true</code> si réussi, <code>false</code> sinon.
+     */
+    private function miseAJour(){
+        // On exécute la requête de mise à jour, en récupérant le nb de lignes modifiés
+        $count = $_SESSION["DB_MANAGER"]->exec(
+            // param 1: requête préparée
+            "UPDATE wam_type_membre SET"
+                . " intitule = :intitule, "
+                . " visible = :visible "
+            . " WHERE Id_type_membre = :id",
+            // param 2: valeurs issues du formulaire
+            $this->parametresSQL(),
+            // param 3: true = lecture, false = écriture
+            false
+        );
+
+        // L'insertion s'est bien passé si on a exactement 1 ligne inséré
+        return $count == 1;
+    } 
+    
+     /**
+     * Récupérer le type de membre sous forme de tableau pour mise à jour en BDD.
+     * 
+     * @param bool $forCreation Est-ce pour une création ?
+     * @return Array[mixed] Les attributs sous forme de tableau.
+     */
+    private function parametresSQL($forCreation = false){        
+        $result = array(
+            "intitule" => $this->nom,
+            "visible" => $this->visible ? "1" : 0
+        );
+        
+        // Ajouter l'identifiant DB si demandé
+        if (!$forCreation){
+            $result["id"] = $this->id;
+        }
+        return $result;
+    }
+    
+    /**
+     * Récupérer un objet Type de Membre depuis un formulaire HTML
+     * @param bool $isPostForm Le formulaire est-il envoyé en POST ?
+     * @return TypeMembre
+     */
+    public static function recupererDepuisFormulaireHTML($isPostForm = true){
+        $filterParameter = $isPostForm ? INPUT_POST : INPUT_GET;
+        
+        $requestParameters = filter_input_array($filterParameter);
+        
+        return new TypeMembre(
+            $requestParameters["IdTypeMembre"],
+            $requestParameters["NomTypeMembre"],
+            isset($requestParameters["VisibiliteTypeMembre"]) ? true : false
+        );
     }
 }
