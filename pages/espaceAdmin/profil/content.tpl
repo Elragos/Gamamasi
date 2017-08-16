@@ -26,7 +26,7 @@
             
             <div class="content-form-input">
                 <label for="Login">
-                    Mail *
+                    Login * 
                 </label>
                 <input type="text" id="Login" name="Login" value="{$admin->login}" required />
             </div>

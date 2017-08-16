@@ -11,6 +11,7 @@
     require_once 'classes/FrontOffice/Membre.class.php';
     require_once 'classes/FrontOffice/SecteurActivite.class.php';
     require_once 'classes/FrontOffice/TypeMembre.class.php';
+    require_once 'classes/FrontOffice/TypeTva.class.php';
     // Partie BackOffice
     require_once 'classes/BackOffice/Admin.class.php';
     // Chargement du moteur de rendu

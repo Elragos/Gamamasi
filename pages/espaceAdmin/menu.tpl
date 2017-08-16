@@ -28,8 +28,8 @@
                         Types de membres
                     </a>
                 </li>
-                <li class="admin-submenu-list-item {if isset($activeSubMenu) && $activeSubMenu == "tauxTVA"}admin-submenu-list-item-active{/if}">
-                    <a href="#">
+                <li class="admin-submenu-list-item {if isset($activeSubMenu) && $activeSubMenu == "typesTVA"}admin-submenu-list-item-active{/if}">
+                    <a href="{absoluteURL page="espaceAdmin/parametres/typesTva"}">
                        Taux de TVA
                     </a>
                 </li>
