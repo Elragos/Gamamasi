@@ -36,7 +36,7 @@ else{
     $erreur = "Impossible de récupérer le membre demandé";
 }
 
-$_SESSION["RENDER_MANAGER"]->pageDatas = array(
+Config::get("RENDER_MANAGER")->pageDatas = array(
     // Est-ce que l'exécution s'est effectuée sans erreur
     "execute" => empty($erreur),
     "erreur" => $erreur,

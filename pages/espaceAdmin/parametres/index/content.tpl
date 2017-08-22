@@ -18,7 +18,7 @@
             </a>
         </li>
         <li class="admin-param-list-item">
-            <a href="#">
+            <a href="{absoluteURL page="espaceAdmin/parametres/gestionAdmins"}">
                 Gestion des administrateurs
             </a>
         </li>

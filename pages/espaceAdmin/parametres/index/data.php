@@ -8,7 +8,7 @@ if (!Admin::sessionSuperAdminActive()){
     exit();
 }
 
-$_SESSION["RENDER_MANAGER"]->pageDatas = array(
+Config::get("RENDER_MANAGER")->pageDatas = array(
     // Indiquer le titre de la page
     "titre" => "Espace Administration - Paramètres globaux",
     "admin" => Admin::recupererSessionActive(),

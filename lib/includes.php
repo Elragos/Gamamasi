@@ -2,7 +2,7 @@
     require_once 'tools.php';
     require_once 'variables.php';
     // Chargement des classes internes
-
+    require_once 'classes/internal/Config.class.php';
     require_once 'classes/internal/DbManager.class.php';
     // Chargement des classes Objets Transverses
     require_once 'classes/Adresse.class.php';

@@ -34,12 +34,10 @@ $(document).ready(function(){
             "IdTypeTva" : ligne.attr("data-typeTva-id"),
             "NomTypeTva" : ligne.attr("data-typeTva-nom"),
             "TauxTypeTva" : ligne.attr("data-typeTva-taux"),
-        };
-        console.log(donneesLigne);        
+        };  
         
         // Remplir le formulaire avec les données
         $('#admin-typeTva-popin form').find('input').val(function() {
-            console.log()
             return donneesLigne[this.id];
         });
     });

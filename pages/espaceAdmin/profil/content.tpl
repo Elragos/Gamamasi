@@ -4,35 +4,35 @@
             <legend>identité</legend>
 
             <div class="content-form-input">
-                <label for="Nom">
+                <label for="NomAdmin">
                     Nom *
                 </label>
-                <input type="text" id="Nom" name="Nom" value="{$admin->nom}" required />
+                <input type="text" id="NomAdmin" name="NomAdmin" value="{$admin->nom}" required />
             </div>
 
             <div class="content-form-input">
-                <label for="Prenom">
+                <label for="PrenomAdmin">
                     Prénom *
                 </label>
-                <input type="text" id="Prenom" name="Prenom" value="{$admin->prenom}" required />
+                <input type="text" id="PrenomAdmin" name="PrenomAdmin" value="{$admin->prenom}" required />
             </div>
 
             <div class="content-form-input">
-                <label for="Mail">
+                <label for="MailAdmin">
                     Mail *
                 </label>
-                <input type="text" id="Mail" name="Mail" value="{$admin->mail}" required />
+                <input type="text" id="MailAdmin" name="MailAdmin" value="{$admin->mail}" required />
             </div>
             
             <div class="content-form-input">
-                <label for="Login">
+                <label for="LoginAdmin">
                     Login * 
                 </label>
-                <input type="text" id="Login" name="Login" value="{$admin->login}" required />
+                <input type="text" id="LoginAdmin" name="LoginAdmin" value="{$admin->login}" required />
             </div>
             
             <div class="content-form-input">
-                <label for="Password">
+                <label for="PasswordAdmin">
                     Mot de passe
                     {if $admin->id != 0}
                         (Laisser vide pour ne pas modifier)
@@ -40,7 +40,7 @@
                         *
                     {/if}
                 </label>
-                <input type="password" id="Password" name="Password" {if $admin->id == 0}required{/if}  />
+                <input type="password" id="PasswordAdmin" name="PasswordAdmin" {if $admin->id == 0}required{/if}  />
             </div>            
         </fieldset>            
         <input type="submit" value="Valider" />

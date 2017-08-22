@@ -1,5 +1,5 @@
 <?php
 
-$_SESSION["RENDER_MANAGER"]->pageDatas = array(
+Config::get("RENDER_MANAGER")->pageDatas = array(
     "test" => "OK",
 );

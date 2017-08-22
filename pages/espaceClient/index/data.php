@@ -9,7 +9,7 @@ if (Client::sessionActiveExistante()){
 
 $error = !empty(filter_input(INPUT_GET, "error"));
 
-$_SESSION["RENDER_MANAGER"]->pageDatas = array(
+Config::get("RENDER_MANAGER")->pageDatas = array(
     // Indiquer le titre de la page
     "titre" => "Espace Client - Authentification",
     "error" => $error

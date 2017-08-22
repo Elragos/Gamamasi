@@ -174,7 +174,7 @@ class Client {
      */
     private function insertion(){       
         // On exécute la requête d'insertion, en récupérant l'id d'insertion
-        $id = $_SESSION["DB_MANAGER"]->exec(
+        $id = Config::get("DB_MANAGER")->exec(
             // param 1: requête préparée
             "INSERT INTO wam_client("
                 . "Nom, Prenom, DateNaissance, Password, Telephone, Mail, "
@@ -210,7 +210,7 @@ class Client {
      */
     private function miseAJour(){
         // On exécute la requête de mise à jour, en récupérant le nb de lignes modifiés
-        $count = $_SESSION["DB_MANAGER"]->exec(
+        $count = Config::get("DB_MANAGER")->exec(
             // param 1: requête préparée
             "UPDATE `wam_client` SET "
                 . "Nom = :Nom, "
@@ -293,7 +293,7 @@ class Client {
         $result = null;
         
         // Récupération des données du client
-        $datas = $_SESSION["DB_MANAGER"]->exec(
+        $datas = Config::get("DB_MANAGER")->exec(
             "SELECT * FROM wam_client WHERE
                 mail = :mail
                 AND password = :password",
@@ -323,7 +323,7 @@ class Client {
         $result = null;
         
         // Récupération des données du client
-        $datas = $_SESSION["DB_MANAGER"]->exec(
+        $datas = Config::get("DB_MANAGER")->exec(
             "SELECT * FROM wam_client WHERE IdClient = :id",
             array(
                 "id" => $id
@@ -350,7 +350,7 @@ class Client {
         $result = array();
         
         // Récupération des données du client
-        $datasList = $_SESSION["DB_MANAGER"]->exec("SELECT * FROM wam_client");
+        $datasList = Config::get("DB_MANAGER")->exec("SELECT * FROM wam_client");
        
         // Pour chaque résultat
         foreach ($datasList as $datas){

@@ -56,7 +56,7 @@ class TypeTva {
         $result = null;
         
         // Récupération des données du client
-        $datas = $_SESSION["DB_MANAGER"]->exec(
+        $datas = Config::get("DB_MANAGER")->exec(
             "SELECT * FROM wam_type_tva WHERE id_TVA = :id",
             array(
                 "id" => $id
@@ -83,7 +83,7 @@ class TypeTva {
         $result = array();
         
         // Récupération des données du client
-        $datasList = $_SESSION["DB_MANAGER"]->exec("SELECT * FROM wam_type_tva");
+        $datasList = Config::get("DB_MANAGER")->exec("SELECT * FROM wam_type_tva");
         
         // Pour chaque résultat
         foreach ($datasList as $datas){
@@ -134,7 +134,7 @@ class TypeTva {
      */
     private function insertion(){       
         // On exécute la requête d'insertion, en récupérant l'id d'insertion
-        $id = $_SESSION["DB_MANAGER"]->exec(
+        $id = Config::get("DB_MANAGER")->exec(
             // param 1: requête préparée
             "INSERT INTO wam_type_tva( "
                 . "taux_TVA, nom"
@@ -162,7 +162,7 @@ class TypeTva {
      */
     private function miseAJour(){
         // On exécute la requête de mise à jour, en récupérant le nb de lignes modifiés
-        $count = $_SESSION["DB_MANAGER"]->exec(
+        $count = Config::get("DB_MANAGER")->exec(
             // param 1: requête préparée
             "UPDATE wam_type_tva SET"
                 . " taux_TVA = :taux_TVA, "

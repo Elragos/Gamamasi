@@ -92,6 +92,7 @@ class HtmlRenderer implements Renderer {
         $this->smarty->assign("js", file_exists($realPagePath . "script.js") 
             ? file_get_contents($realPagePath . "script.js") : "", true);
 
+        // Assigner le menu
         $this->smarty->assign("menuContent", $this->getMenuFromPage($realPagePath), true);
 
         // Assigner le corps de page
@@ -99,6 +100,9 @@ class HtmlRenderer implements Renderer {
 
         // Assigner la racine du site
         $this->smarty->assign("rootURL", BASE_URL);
+        
+        // Assigner la configuration du site
+        $this->smarty->assign("config", Config::getInstance());
 
         // Afficher le template
         return $this->smarty->fetch($this->pageLayout);

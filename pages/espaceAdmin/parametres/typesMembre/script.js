@@ -34,13 +34,10 @@ $(document).ready(function(){
             "IdTypeMembre" : ligne.attr("data-typeMembre-id"),
             "NomTypeMembre" : ligne.attr("data-typeMembre-nom"),
             "VisibiliteTypeMembre" : ligne.attr("data-typeMembre-visible") == "1",
-        };
-        console.log(donneesLigne);
-        
+        };        
         
         // Remplir le formulaire avec les données
         $('#admin-typeMembre-popin form').find('input').val(function() {
-            console.log()
             return donneesLigne[this.id];
         });
         

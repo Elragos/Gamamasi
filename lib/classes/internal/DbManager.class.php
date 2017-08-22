@@ -118,8 +118,7 @@ class DbManager {
         // Déclaration du résultat
         $result = false;
         // Connexion à la DB.
-        $db = $this->connectDB($reading);      
-        
+        $db = $this->connectDB($reading);        
         
         // On prépare la requête
         $statement = $db->prepare($request);

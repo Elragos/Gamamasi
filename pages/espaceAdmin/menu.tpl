@@ -39,7 +39,7 @@
                     </a>
                 </li>
                 <li class="admin-submenu-list-item {if isset($activeSubMenu) && $activeSubMenu == "gestionAdmins"}admin-submenu-list-item-active{/if}">
-                    <a href="#">
+                    <a href="{absoluteURL page="espaceAdmin/parametres/gestionAdmins"}">
                         Gestion des administrateurs
                     </a>
                 </li>

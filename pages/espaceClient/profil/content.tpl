@@ -28,7 +28,7 @@
                 <label for="DateNaissance">
                     Date de naissance
                 </label>
-                <input type="date" id="DateNaissance" name="DateNaissance"  value="{$client->dateNaissance|date_format:"%Y-%m-%d"}" />
+                <input type="date" id="DateNaissance" name="DateNaissance"  value="{$client->dateNaissance|date_format:$config::get("formatDateTechique")}" />
             </div>
 
             <div class="content-form-input">

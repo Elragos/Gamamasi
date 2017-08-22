@@ -10,9 +10,9 @@ if (!Admin::sessionSuperAdminActive()){
 
 Config::get("RENDER_MANAGER")->pageDatas = array(
     // Indiquer le titre de la page
-    "titre" => "Espace Administration - Gestion des types de membre",
+    "titre" => "Espace Administration - Gestion des Administrateurs",
     "admin" => Admin::recupererSessionActive(),
-    "typesMembre" => TypeMembre::chargerTout(),
+    "listeAdmins" => Admin::chargerTout(),
     "activeMenu" => "parametres",
-    "activeSubMenu" => "typesMembre",
+    "activeSubMenu" => "gestionAdmins",
 );

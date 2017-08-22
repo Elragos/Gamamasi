@@ -118,17 +118,15 @@ class Admin {
      */
     private function insertion(){       
         // On exécute la requête d'insertion, en récupérant l'id d'insertion
-        $id = $_SESSION["DB_MANAGER"]->exec(
+        $id = Config::get("DB_MANAGER")->exec(
             // param 1: requête préparée
-            "INSERT INTO wam_admin("
-                . "Nom, Prenom, Login, Password, Mail, "
-                . "DateCreation, DateModification, "
-                . "super_admin"
-            . ") VALUES ("
-                . ":Nom, :Prenom, :Login, :Password, :Mail, "
-                . ":DateCreation, :DateModification, "
-                . ":super_admin"
-            . ");",
+            "INSERT INTO wam_admin(
+                Nom, Prenom, Login, Password, Mail,
+                DateCreation, DateModification, super_admin
+            ) VALUES (
+                :Nom, :Prenom, :Login, :Login, :Mail,
+                :DateCreation, :DateModification, :super_admin
+            );",
             // param 2: valeurs issues du formulaire
             $this->parametresSQL(true),
             // param 3: true = lecture, false = écriture
@@ -150,17 +148,17 @@ class Admin {
      */
     private function miseAJour(){
         // On exécute la requête de mise à jour, en récupérant le nb de lignes modifiés
-        $count = $_SESSION["DB_MANAGER"]->exec(
+        $count = Config::get("DB_MANAGER")->exec(
             // param 1: requête préparée
-            "UPDATE `wam_admin` SET "
-                . "Nom = :Nom, "
-                . "Prenom = :Prenom, "
-                . "Login = :Login, "
-                . "Password = :Password, "
-                . "Mail = :Mail, "
-                . "DateModification = :DateModification, "
-                . "super_admin = :super_admin"
-            . "WHERE IdUtilisateur = :id;",
+            "UPDATE `wam_admin` SET
+                Nom = :Nom,
+                Prenom = :Prenom,
+                Login = :Login,
+                Password = CASE WHEN :Password IS NULL THEN Password ELSE :Password END,
+                Mail = :Mail,
+                DateModification = :DateModification,
+                super_admin = :super_admin
+            WHERE IdUtilisateur = :id;",
             // param 2: valeurs issues du formulaire
             $this->parametresSQL(),
             // param 3: true = lecture, false = écriture
@@ -183,9 +181,9 @@ class Admin {
             "Prenom" => $this->prenom,
             "Mail" => $this->mail,
             "Login" => $this->login,
-            "Password" => $this->password,         
+      
             "DateModification" => $this->dateModification->format("Y-m-d H:i:s"),
-            "super_admin" => $this->superAdmin
+            "super_admin" => $this->superAdmin ? "1" : "0",
         );
         // Ajouter l'identifiant DB si demandé
         if ($forCreation){
@@ -193,8 +191,31 @@ class Admin {
         }
         else{
             $result["id"] = $this->id;
+            $result["Password"] = $this->password;
         }
         return $result;
+    }
+    
+    /**
+     * Supprimer logiquement un administrateur en DB.
+     * @return bool <code>true</code> si réussi, <code>false</code> sinon.
+     */
+    public function supprimer(){
+        // On exécute la requête de mise à jour, en récupérant le nb de lignes modifiés
+        $count = Config::get("DB_MANAGER")->exec(
+            // param 1: requête préparée
+            "UPDATE `wam_admin` SET active = 0
+            WHERE IdUtilisateur = :id;",
+            // param 2: valeurs issues du formulaire
+            array(
+                "id" => $this->id
+            ),
+            // param 3: true = lecture, false = écriture
+            false
+        );
+
+        // L'insertion s'est bien passé si on a exactement 1 ligne inséré
+        return $count == 1;
     }
     
     /**
@@ -209,10 +230,11 @@ class Admin {
         $result = null;
         
         // Récupération des données de l'administrateur
-        $datas = $_SESSION["DB_MANAGER"]->exec(
+        $datas = Config::get("DB_MANAGER")->exec(
             "SELECT * FROM wam_admin WHERE
                 Login = :Login
-                AND password = :password",
+                AND password = :password
+                AND active = 1",
             array(
                 "Login" => $login,
                 "password" => $password
@@ -240,8 +262,8 @@ class Admin {
         $result = null;
         
         // Récupération des données de l'administrateur
-        $datas = $_SESSION["DB_MANAGER"]->exec(
-            "SELECT * FROM wam_admin WHERE IdUtilisateur = :id",
+        $datas = Config::get("DB_MANAGER")->exec(
+            "SELECT * FROM wam_admin WHERE IdUtilisateur = :id AND active = 1",
             array(
                 "id" => $id
             )
@@ -267,7 +289,7 @@ class Admin {
         $result = array();
         
         // Récupération des données de l'administrateur
-        $datasList = $_SESSION["DB_MANAGER"]->exec("SELECT * FROM wam_admin");
+        $datasList = Config::get("DB_MANAGER")->exec("SELECT * FROM wam_admin WHERE active = 1");
        
         // Pour chaque résultat
         foreach ($datasList as $datas){
@@ -392,11 +414,11 @@ class Admin {
         $requestParameters = filter_input_array($filterParameter);
 
         $result =  new Admin(
-            $requestParameters["Nom"],
-            $requestParameters["Prenom"],
-            $requestParameters["Mail"],
-            $requestParameters["Login"],
-            $requestParameters["Password"]
+            $requestParameters["NomAdmin"],
+            $requestParameters["PrenomAdmin"],
+            $requestParameters["MailAdmin"],
+            $requestParameters["LoginAdmin"],
+            $requestParameters["PasswordAdmin"]
         );
         
         // Si on a une session active
@@ -404,6 +426,33 @@ class Admin {
             // Merger avec les données de la session
             Admin::mergerAvecSessionActive($result);
         }
+        // Renvoyer l'administrateur ainsi créé
+        return $result;
+    }
+    
+    /**
+     * Créer un objet administrateur à partir d'un formulaire SuperAdmin.
+     * 
+     * @param bool $isPostForm Le formulaire est-il envoyé en POST ?
+     * @return Admin L'administrateur ainsi généré.
+     */
+    public static function recupererDepuisFormulaireHTMLSuperAdmin($isPostForm = true){
+        $filterParameter = $isPostForm ? INPUT_POST : INPUT_GET;
+        
+        $requestParameters = filter_input_array($filterParameter);
+
+        $result =  new Admin(
+            $requestParameters["NomSuperAdmin"],
+            $requestParameters["PrenomSuperAdmin"],
+            $requestParameters["MailSuperAdmin"],
+            $requestParameters["LoginSuperAdmin"],
+            null, // Mot de passe (vide pour pas de modifs),
+            null, // Date Création
+            null, // Date Modification
+            $requestParameters["IdSuperAdmin"]
+        );
+        $result->superAdmin = isset($requestParameters["DroitSuperAdmin"]);        
+        
         // Renvoyer l'administrateur ainsi créé
         return $result;
     }

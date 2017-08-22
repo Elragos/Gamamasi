@@ -9,7 +9,7 @@ if (Admin::sessionActiveExistante()){
 
 $error = !empty(filter_input(INPUT_GET, "error"));
 
-$_SESSION["RENDER_MANAGER"]->pageDatas = array(
+Config::get("RENDER_MANAGER")->pageDatas = array(
     // Indiquer le titre de la page
     "titre" => "Espace Administration - Authentification",
     "error" => $error

@@ -90,7 +90,7 @@ class Membre {
         $result = null;
         
         // Récupération des données du client
-        $datas = $_SESSION["DB_MANAGER"]->exec(
+        $datas = Config::get("DB_MANAGER")->exec(
             "SELECT * FROM wam_membre WHERE "
                 . "Id_membre = :id "
                 . "AND IdClient = :idClient "
@@ -123,7 +123,7 @@ class Membre {
         $result = array();
         
         // Récupération des données du client
-        $datasList = $_SESSION["DB_MANAGER"]->exec(
+        $datasList = Config::get("DB_MANAGER")->exec(
             "SELECT * FROM wam_membre WHERE "
                 . "IdClient = :idClient "
                 . "AND actif = :actif",
@@ -187,7 +187,7 @@ class Membre {
      */
     private function insertion(){       
         // On exécute la requête d'insertion, en récupérant l'id d'insertion
-        $id = $_SESSION["DB_MANAGER"]->exec(
+        $id = Config::get("DB_MANAGER")->exec(
             // param 1: requête préparée
             "INSERT INTO wam_membre( "
                 . " Nom_membre, Prenom_membre, Mail, "
@@ -217,7 +217,7 @@ class Membre {
      */
     private function miseAJour(){
         // On exécute la requête de mise à jour, en récupérant le nb de lignes modifiés
-        $count = $_SESSION["DB_MANAGER"]->exec(
+        $count = Config::get("DB_MANAGER")->exec(
             // param 1: requête préparée
             "UPDATE wam_membre SET"
                 . " Nom_membre = :Nom_membre, "
@@ -241,7 +241,7 @@ class Membre {
      */
     public function supprimer(){
                 // On exécute la requête de mise à jour, en récupérant le nb de lignes modifiés
-        $count = $_SESSION["DB_MANAGER"]->exec(
+        $count = Config::get("DB_MANAGER")->exec(
             // param 1: requête préparée
             "UPDATE wam_membre SET actif = 0"
             . " WHERE Id_membre = :id AND IdClient = :IdClient",
