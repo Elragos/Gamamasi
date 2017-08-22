@@ -13,7 +13,7 @@
             </a>
         </li>
         <li class="admin-param-list-item">
-            <a href="#">
+            <a href="{absoluteURL page="espaceAdmin/parametres/gestionOptions"}">
                Gestion des options 
             </a>
         </li>

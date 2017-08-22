@@ -1,13 +1,13 @@
 <?php
 // Charger les librairies
-require("lib/includes.php");
+require_once("lib/includes.php");
 
 // Initialiser la session PHP
 session_start();
 
 // Charger la configuration
-require("lib/config.php");
-require("lib/db.php");
+require_once("lib/config.php");
+require_once("lib/db.php");
 
 /* Utile pour debugger les formulaires 
 echo("paramètres GET : ");

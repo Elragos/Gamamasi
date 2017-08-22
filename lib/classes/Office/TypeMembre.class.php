@@ -1,55 +1,55 @@
 <?php
 
 /**
- * Représentation d'un type de TVA dans la solution.
+ * Représentation d'un type de membre dans la solution.
  *
  * @author marechal
  */
-class TypeTva {
+class TypeMembre {
     /**
-     * Identifiant DB du type de TVA.
+     * Identifiant DB du type de membre.
      * @var int.
      */
     public $id;
     /**
-     * Nom du type de TVA.
+     * Nom du type de membre.
      * @var string.
      */
     public $nom;
     
     /**
-     * Taux de TVA.
-     * @var float 
+     * Est-ce que ce type de membre est visible par les clients ?
+     * @var bool.
      */
-    public $taux;
-    
+    public $visible;
+   
     /**
      * Constructeur.
      * 
-     * @param int $id Identifiant DB du type de TVA.
-     * @param string $nom Nom du type de TVA.
-     * @param bool $taux Taux de TVA.
+     * @param int $id Identifiant DB du type de membre.
+     * @param string $nom Nom du type de membre.
+     * @param bool $visible Est-ce que ce type de membre est visible par les clients ? 
      */
-    public function __construct($id, $nom, $taux) {
+    public function __construct($id, $nom, $visible = true) {
         $this->id = $id;
         $this->nom = $nom;
-        $this->taux = $taux;
+        $this->visible = $visible;
     }
     
     /**
-     * Récupérer le type de TVA sous forme de chaîne de caractères.
+     * Récupérer le type de membre sous forme de chaîne de caractères.
      * 
      * @return string Le type de membre.
      */
     public function __toString() {
-        return $this->id . " : " . $this->nom . " = " . $this->taux . "%";
+        return $this->id . " : " . $this->nom . "(" .$this->visible ? ("Visible") : ("Invisible") . ")"; 
     }
     
     /**
      * Charger un type de membre depuis son Identifiant DB.
      * 
      * @param int $id Identifiant DB du client.
-     * @return TypeTva Le type de membre trouvé, ou null su non trouvé.
+     * @return TypeMembre Le type de membre trouvé, ou null su non trouvé.
      */
     public static function charger($id){
         // Déclaration du résultat
@@ -57,7 +57,7 @@ class TypeTva {
         
         // Récupération des données du client
         $datas = Config::get("DB_MANAGER")->exec(
-            "SELECT * FROM wam_type_tva WHERE id_TVA = :id",
+            "SELECT * FROM wam_type_membre WHERE Id_type_membre = :id",
             array(
                 "id" => $id
             )
@@ -66,7 +66,7 @@ class TypeTva {
         // Si on a des résultats
         if (isset($datas) && !empty($datas)){
             // Charger depuis le premier résultat
-           $result = TypeTva::chargerDepuisRetourSQL($datas[0]);
+           $result = TypeMembre::chargerDepuisRetourSQL($datas[0]);
         }
 
         // Renvoyer le résultat
@@ -74,21 +74,25 @@ class TypeTva {
     }
     
     /**
-     * Charger la liste complète des secteurs d'activité.
+     * Charger la liste complète des typers de membres.
      * 
-     * @return Array[TypeTva] La liste des types de membres dans la DB.
+     * @param bool $prendreInvisible Doit-on prendre les types masqués ?
+     * @return Array[TypeMembre] La liste des types de membres dans la DB.
      */
-    public static function chargerTout(){
+    public static function chargerTout($prendreInvisible = false){
         // Déclaration du résultat
         $result = array();
         
         // Récupération des données du client
-        $datasList = Config::get("DB_MANAGER")->exec("SELECT * FROM wam_type_tva");
+        $datasList = Config::get("DB_MANAGER")->exec(
+            "SELECT * FROM wam_type_membre"
+            . $prendreInvisible ? "" : " WHERE visible = 1"
+        );
         
         // Pour chaque résultat
         foreach ($datasList as $datas){
             // Charger depuis les résultats
-           $result[] = TypeTva::chargerDepuisRetourSQL($datas);
+           $result[] = TypeMembre::chargerDepuisRetourSQL($datas);
         }
 
         // Renvoyer le résultat
@@ -96,21 +100,21 @@ class TypeTva {
     }
     
     /**
-     * Créer un Type de TVA à partir des données d'un tableau associatif.
+     * Créer un Type de membre à partir des données d'un tableau associatif.
      * 
      * @param Array[String] $datas Le tableau associatif contenant les données à charger.
-     * @return TypeTva Le type de membre ainsi créé.
+     * @return TypeMembre Le type de membre ainsi créé.
      */
     private static function chargerDepuisRetourSQL($datas){        
-        return new TypeTva(
-            $datas["id_TVA"],
-            $datas["nom"],
-            $datas["taux_TVA"]
+        return new TypeMembre(
+            $datas["Id_type_membre"],
+            $datas["intitule"],
+            $datas["visible"]
         );
     }
     
     /**
-     * Sauvegarder le type de TVA (gère l'insertion et la mise à jour)
+     * Sauvegarder le type de membre (gère l'insertion et la mise à jour)
      * 
      * @return bool <code>true</code> si réussi, <code>false</code> sinon.
      */
@@ -128,7 +132,7 @@ class TypeTva {
     }
     
     /**
-     * Ajoute en DB le type de TVA.
+     * Ajoute en DB le type de membre.
      * 
      * @return bool <code>true</code> si réussi, <code>false</code> sinon.
      */
@@ -136,10 +140,10 @@ class TypeTva {
         // On exécute la requête d'insertion, en récupérant l'id d'insertion
         $id = Config::get("DB_MANAGER")->exec(
             // param 1: requête préparée
-            "INSERT INTO wam_type_tva( "
-                . "taux_TVA, nom"
+            "INSERT INTO wam_type_membre( "
+                . "intitule, visible"
             . ") VALUES ("
-                . ":taux_TVA, :nom"
+                . ":intitule, :visible"
             . ");",
             // param 2: valeurs issues du formulaire
             $this->parametresSQL(true),
@@ -156,7 +160,7 @@ class TypeTva {
         return $id > 0;
     }
     /**
-     * Met à jour en DB le type de TVA.
+     * Met à jour en DB le type de membre.
      * 
      * @return bool <code>true</code> si réussi, <code>false</code> sinon.
      */
@@ -164,10 +168,10 @@ class TypeTva {
         // On exécute la requête de mise à jour, en récupérant le nb de lignes modifiés
         $count = Config::get("DB_MANAGER")->exec(
             // param 1: requête préparée
-            "UPDATE wam_type_tva SET"
-                . " taux_TVA = :taux_TVA, "
-                . " nom = :nom "
-            . " WHERE id_TVA = :id",
+            "UPDATE wam_type_membre SET"
+                . " intitule = :intitule, "
+                . " visible = :visible "
+            . " WHERE Id_type_membre = :id",
             // param 2: valeurs issues du formulaire
             $this->parametresSQL(),
             // param 3: true = lecture, false = écriture
@@ -186,8 +190,8 @@ class TypeTva {
      */
     private function parametresSQL($forCreation = false){        
         $result = array(
-            "taux_TVA" => $this->taux,
-            "nom" => $this->nom
+            "intitule" => $this->nom,
+            "visible" => $this->visible ? "1" : 0
         );
         
         // Ajouter l'identifiant DB si demandé
@@ -198,19 +202,19 @@ class TypeTva {
     }
     
     /**
-     * Récupérer un objet Type de Tva depuis un formulaire HTML
+     * Récupérer un objet Type de Membre depuis un formulaire HTML
      * @param bool $isPostForm Le formulaire est-il envoyé en POST ?
-     * @return TypeTVA
+     * @return TypeMembre
      */
     public static function recupererDepuisFormulaireHTML($isPostForm = true){
         $filterParameter = $isPostForm ? INPUT_POST : INPUT_GET;
         
         $requestParameters = filter_input_array($filterParameter);
         
-        return new TypeTva(
-            $requestParameters["IdTypeTva"],
-            $requestParameters["NomTypeTva"],
-            $requestParameters["TauxTypeTva"]
+        return new TypeMembre(
+            $requestParameters["IdTypeMembre"],
+            $requestParameters["NomTypeMembre"],
+            isset($requestParameters["VisibiliteTypeMembre"]) ? true : false
         );
     }
 }

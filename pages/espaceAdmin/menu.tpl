@@ -11,6 +11,12 @@
             </a>
         </li>
         
+        <li class="admin-menu-list-item {if isset($activeMenu) && $activeMenu == "listeClients"}admin-menu-list-item-active{/if}">
+            <a href="{absoluteURL page="espaceAdmin/listeClients"}">
+                Liste des clients
+            </a>
+        </li>
+        
         <li class="admin-menu-list-item {if isset($activeMenu) && $activeMenu == "secteursActivites"}admin-menu-list-item-active{/if}">
             <a href="{absoluteURL page="espaceAdmin/secteursActivites"}">
                 Secteurs d'activités
@@ -34,7 +40,7 @@
                     </a>
                 </li>
                 <li class="admin-submenu-list-item {if isset($activeSubMenu) && $activeSubMenu == "gestionOptions"}admin-submenu-list-item-active{/if}">
-                    <a href="#">
+                    <a href="{absoluteURL page="espaceAdmin/parametres/gestionOptions"}">
                        Gestion des options 
                     </a>
                 </li>

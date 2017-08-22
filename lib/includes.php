@@ -4,16 +4,15 @@
     // Chargement des classes internes
     require_once 'classes/internal/Config.class.php';
     require_once 'classes/internal/DbManager.class.php';
-    // Chargement des classes Objets Transverses
-    require_once 'classes/Adresse.class.php';
-    // Partie FrontOffice
-    require_once 'classes/FrontOffice/Client.class.php';
-    require_once 'classes/FrontOffice/Membre.class.php';
-    require_once 'classes/FrontOffice/SecteurActivite.class.php';
-    require_once 'classes/FrontOffice/TypeMembre.class.php';
-    require_once 'classes/FrontOffice/TypeTva.class.php';
-    // Partie BackOffice
-    require_once 'classes/BackOffice/Admin.class.php';
+    // Partie Front Office & Back Office
+    require_once 'classes/Office/Adresse.class.php';
+    require_once 'classes/Office/Admin.class.php';
+    require_once 'classes/Office/Client.class.php';
+    require_once 'classes/Office/Membre.class.php';
+    require_once 'classes/Office/Option.class.php';
+    require_once 'classes/Office/SecteurActivite.class.php';
+    require_once 'classes/Office/TypeMembre.class.php';
+    require_once 'classes/Office/TypeTva.class.php';
     // Chargement du moteur de rendu
     require_once 'classes/render/RenderManager.class.php';
     

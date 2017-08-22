@@ -10,8 +10,8 @@ if (!Admin::sessionActiveExistante()){
 
 Config::get("RENDER_MANAGER")->pageDatas = array(
     // Indiquer le titre de la page
-    "titre" => "Espace Administration - Paramètres globaux",
+    "titre" => "Espace Administration - Liste des clients",
     "admin" => Admin::recupererSessionActive(),
-    "secteurs" => SecteurActivite::chargerTout(true),
-    "activeMenu" => "secteursActivites",
+    "clients" => Client::chargerTout(),
+    "activeMenu" => "listeClients",
 );

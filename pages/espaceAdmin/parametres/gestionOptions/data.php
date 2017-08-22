@@ -10,9 +10,10 @@ if (!Admin::sessionSuperAdminActive()){
 
 Config::get("RENDER_MANAGER")->pageDatas = array(
     // Indiquer le titre de la page
-    "titre" => "Espace Administration - Gestion des types de membre",
+    "titre" => "Espace Administration - Gestion des options",
     "admin" => Admin::recupererSessionActive(),
-    "typesMembre" => TypeMembre::chargerTout(true),
+    "options" => Option::chargerTout(),
+    "typesTva" => TypeTva::chargerTout(),
     "activeMenu" => "parametres",
-    "activeSubMenu" => "typesMembre",
+    "activeSubMenu" => "gestionOptions",
 );

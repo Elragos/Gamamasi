@@ -76,14 +76,18 @@ class SecteurActivite {
     /**
      * Charger la liste complète des secteurs d'activité.
      * 
+     * @param bool $prendreInvisible Doit-on prendre les secteurs masqués ?
      * @return Array[SecteurActivite] La liste des secteurs d'activité dans la DB.
      */
-    public static function chargerTout(){
+    public static function chargerTout($prendreInvisible = false){
         // Déclaration du résultat
         $result = array();
         
         // Récupération des données du client
-        $datasList = Config::get("DB_MANAGER")->exec("SELECT * FROM wam_secteur_activite");
+        $datasList = Config::get("DB_MANAGER")->exec(
+            "SELECT * FROM wam_secteur_activite"
+            . $prendreInvisible ? "" : " WHERE visible = 1"
+        );
         
         // Pour chaque résultat
         foreach ($datasList as $datas){
