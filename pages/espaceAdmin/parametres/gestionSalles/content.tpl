@@ -28,6 +28,10 @@
                     data-salle-capacite="{$salle->capaciteMax}"
                     data-salle-tarif="{$salle->tarifHT|string_format:"%.3f"}"
                     data-salle-type="{$salle->type}"
+                    data-salle-posX="{$salle->position->x}"
+                    data-salle-posY="{$salle->position->y}"
+                    data-salle-longueur="{$salle->longueur}"
+                    data-salle-largeur="{$salle->largeur}"
                     data-salle-enVente="{if $salle->enVente}1{else}0{/if}">
                     <td>
                         {$salle->nom}
@@ -76,6 +80,10 @@
     
     <form action="{absoluteURL page="espaceAdmin/parametres/gestionSalles" action=true}" method="POST">       
         <input type="hidden" id="IdSalle" name="IdSalle" value="0" />
+        <input type="hidden" id="PosXSalle" name="PosXSalle" value="0" />
+        <input type="hidden" id="PosYSalle" name="PosYSalle" value="0" />
+        <input type="hidden" id="LongueurSalle" name="LongueurSalle" value="0" />
+        <input type="hidden" id="LargeurSalle" name="LargeurSalle" value="0" />
         
         <div class="content-form-input">
             <label for="NomSalle">

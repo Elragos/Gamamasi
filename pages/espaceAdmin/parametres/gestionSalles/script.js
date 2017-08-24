@@ -37,6 +37,10 @@ $(document).ready(function(){
             "TarifHtSalle" : ligne.attr("data-salle-tarif"),
             "TypeSalle" : ligne.attr("data-salle-type"),
             "EnVenteSalle" : ligne.attr("data-salle-enVente") == 1,
+            "PosXSalle" : ligne.attr("data-salle-posX"),
+            "PosYSalle" : ligne.attr("data-salle-posY"),
+            "LongueurSalle" : ligne.attr("data-salle-longueur"),
+            "LargeurSalle" : ligne.attr("data-salle-largeur"),
         };
         
         // Remplir le formulaire avec les données

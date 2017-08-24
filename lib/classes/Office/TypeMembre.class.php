@@ -86,7 +86,7 @@ class TypeMembre {
         // Récupération des données du client
         $datasList = Config::get("DB_MANAGER")->exec(
             "SELECT * FROM wam_type_membre"
-            . $prendreInvisible ? "" : " WHERE visible = 1"
+            . ($prendreInvisible ? "" : " WHERE visible = 1")
         );
         
         // Pour chaque résultat

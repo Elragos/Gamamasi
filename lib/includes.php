@@ -11,6 +11,7 @@
     require_once 'classes/Office/Client.class.php';
     require_once 'classes/Office/Membre.class.php';
     require_once 'classes/Office/Option.class.php';
+    require_once 'classes/Office/Point.class.php';
     require_once 'classes/Office/Salle.class.php';    
     require_once 'classes/Office/SecteurActivite.class.php';
     require_once 'classes/Office/TypeMembre.class.php';

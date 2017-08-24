@@ -43,6 +43,24 @@ class Salle {
     public $enVente;
     
     /**
+     * Position de départ par rapport au modèle.
+     * @var Point 
+     */
+    public $position;
+    
+    /**
+     * Longueur en pixels de la salle.
+     * @var int 
+     */
+    public $longueur;
+    
+    /**
+     * Largeur en pixels de la salle.
+     * @var int 
+     */
+    public $largeur;
+    
+    /**
      * Types de salle.
      * @var type 
      */
@@ -58,15 +76,21 @@ class Salle {
      * @param float $tarifHT Le tarif HT à l'heure.
      * @param int $type Le type de salle.
      * @param bool $enVente Est-ce que la salle est en vente ?
+     * @param Point $position Position de départ par rapport au modèle.
+     * @param int $longueur Longueur en pixels de la salle.
+     * @param int $largeur Largeur en pixels de la salle.
      * @param int $id Identifiant DB de la salle.
      */
-    public function __construct($nom, $capaciteMax, $tarifHT, $type, $enVente, $id = 0){
+    public function __construct($nom, $capaciteMax, $tarifHT, $type, $enVente, $position, $longueur, $largeur, $id = 0){
         $this->id = $id;
         $this->nom = $nom;
         $this->capaciteMax = $capaciteMax;
         $this->tarifHT = $tarifHT;
         $this->type = $type;
         $this->enVente = $enVente;
+        $this->position = $position;
+        $this->longueur = $longueur;
+        $this->largeur = $largeur;
     }
     
     /**
@@ -133,8 +157,11 @@ class Salle {
             $datas["Nom"],
             $datas["CapaciteMax"],
             $datas["TarifHoraireHT"],
-            $datas["IdTypeSalle"],
+            $datas["TypeSalle"],
             $datas["enVente"] == 1,
+            new Point($datas["posX"], $datas["posY"]),
+            $datas["longueur"],
+            $datas["largeur"],
             $datas["IdSalle"]    
         );
     }
@@ -167,9 +194,9 @@ class Salle {
         $id = Config::get("DB_MANAGER")->exec(
             // param 1: requête préparée
             "INSERT INTO wam_salle(
-                Nom, TarifHoraireHT, CapaciteMax, IdTypeSalle, enVente
+                Nom, TarifHoraireHT, CapaciteMax, TypeSalle, enVente
             ) VALUES (
-                :Nom, :TarifHoraireHT, :CapaciteMax, :IdTypeSalle, :enVente
+                :Nom, :TarifHoraireHT, :CapaciteMax, :TypeSalle, :enVente
             );",
             // param 2: valeurs issues du formulaire
             $this->parametresSQL(true),
@@ -198,7 +225,7 @@ class Salle {
                 Nom = :Nom,
                 TarifHoraireHT = :TarifHoraireHT,
                 CapaciteMax = :CapaciteMax,
-                IdTypeSalle = :IdTypeSalle,
+                TypeSalle = :TypeSalle,
                 enVente = :enVente
             WHERE IdSalle = :id",
             // param 2: valeurs issues du formulaire
@@ -222,7 +249,7 @@ class Salle {
             "Nom" => $this->nom,
             "TarifHoraireHT" => $this->tarifHT,
             "CapaciteMax" => $this->capaciteMax,
-            "IdTypeSalle" => $this->type,
+            "TypeSalle" => $this->type,
             "enVente" => $this->enVente ? "1" : "0",
         );
 
@@ -249,6 +276,10 @@ class Salle {
             $requestParameters["TarifHtSalle"],
             $requestParameters["TypeSalle"],
             isset($requestParameters["EnVenteSalle"]),
+            $requestParameters["PosXSalle"],
+            $requestParameters["PosYSalle"],
+            $requestParameters["LongueurSalle"],
+            $requestParameters["LargeurSalle"],
             $requestParameters["IdSalle"]
         );
     }
