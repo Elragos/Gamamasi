@@ -65,3 +65,23 @@
         // Détruire la session
         session_destroy();
     }
+    
+    /**
+     * Calculer un prix TTC à partir du HT.
+     * @param float $ht Le prix HT de base.
+     * @param float $tauxTVA Le taux de TVA à appliquer.
+     * @return float Le prix TTC résultant.
+     */
+    function calculerTTC($ht, $tauxTVA){
+        return round($ht * (1 + ( $tauxTVA/ 100)), 2);
+    }
+    
+       /**
+     * Calculer un prix HT à partir du TTC.
+     * @param float $ttc Le prix TTC de base.
+     * @param float $tauxTVA Le taux de TVA appliqué.
+     * @return float Le prix HT résultant.
+     */
+    function calculerHT($ttc, $tauxTVA){
+        return round($ttc / (1 + ( $tauxTVA/ 100)), 2);
+    }

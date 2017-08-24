@@ -82,10 +82,10 @@ class Option {
     
     /**
      * Calcule le prix TTC de l'option arrondi à 2 décimales.
-     * @return int Le prix TTC de l'option.
+     * @return float Le prix TTC de l'option.
      */
     public function prixTTC(){
-        return round($this->prixHT * (1 + ( $this->tva->taux/ 100)), 2);
+        return calculerTTC($this->prixHT, $this->tva->taux);
     }
     
     /**

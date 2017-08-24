@@ -67,7 +67,6 @@
                         </button>
                     </td>
                 </tr>
-            </option>
             {/foreach}
         </tbody>
     </table>

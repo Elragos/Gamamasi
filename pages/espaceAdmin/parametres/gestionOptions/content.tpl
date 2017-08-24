@@ -25,9 +25,10 @@
         <tbody>
             {foreach from=$options item=option}
                 <tr data-option-id="{$option->id}" data-option-nom="{$option->nom}"
-                    data-option-prix="{$option->prixHT}" data-option-tvaId="{$option->tva->id}"
+                    data-option-prix="{$option->prixHT|string_format:"%.3f"}"
+                    data-option-tvaId="{$option->tva->id}" data-option-stockMax="{$option->stockMax}"
                     data-option-enVente="{if $option->enVente}1{else}0{/if}"
-                    data-option-stockMax="{$option->stockMax}">
+                    >
                     <td>
                         {$option->nom}
                     </td>
@@ -54,7 +55,6 @@
                         </button>
                     </td>
                 </tr>
-            </option>
             {/foreach}
         </tbody>
     </table>

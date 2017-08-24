@@ -44,6 +44,11 @@
                        Gestion des options 
                     </a>
                 </li>
+                <li class="admin-submenu-list-item {if isset($activeSubMenu) && $activeSubMenu == "gestionSalles"}admin-submenu-list-item-active{/if}">
+                    <a href="{absoluteURL page="espaceAdmin/parametres/gestionSalles"}">
+                        Gestion des salles
+                    </a>
+                </li>
                 <li class="admin-submenu-list-item {if isset($activeSubMenu) && $activeSubMenu == "gestionAdmins"}admin-submenu-list-item-active{/if}">
                     <a href="{absoluteURL page="espaceAdmin/parametres/gestionAdmins"}">
                         Gestion des administrateurs

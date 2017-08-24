@@ -38,10 +38,7 @@ $(document).ready(function(){
             "LoginSuperAdmin" : ligne.attr("data-admin-login"),
             "DroitSuperAdmin" : ligne.attr("data-admin-superAdmin") == 1,
         };
-        
-        
-        console.log(donneesLigne);
-        
+
         // Remplir le formulaire avec les données
         $('#admin-gestionAdmin-popin form').find('input').val(function() {
             return donneesLigne[this.id];

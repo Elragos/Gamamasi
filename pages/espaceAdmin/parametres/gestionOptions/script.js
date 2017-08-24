@@ -44,9 +44,9 @@ $(document).ready(function(){
             "NomOption" : ligne.attr("data-option-nom"),
             "PrixHtOption" : ligne.attr("data-option-prix"),
             "IdTvaOption" : ligne.attr("data-option-tvaId"),
-            "EnVenteOption" : ligne.attr("data-option-enVente"),
+            "EnVenteOption" : ligne.attr("data-option-enVente") == 1,
             "StockMaxOption" : ligne.attr("data-option-stockMax"),
-        };  
+        };        
         
         // Fix pour la checkBox
         if (donneesLigne.EnVenteOption){
@@ -57,7 +57,7 @@ $(document).ready(function(){
         }
         
         // Remplir le formulaire avec les données
-        $('#admin-options-popin form').find('input').val(function() {
+        $('#admin-options-popin form').find('input, select').val(function() {
             return donneesLigne[this.id];
         });
         
