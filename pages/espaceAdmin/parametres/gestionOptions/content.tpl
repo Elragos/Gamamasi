@@ -101,15 +101,13 @@
             <input type="number" id="PrixHtOption" name="PrixHtOption" step=".001" />
             
         </div>            
-            <div class="content-form-input">
+        <div class="content-form-input">
             <label for="PrixTtcOption">
                 Prix TTC
             </label>
             <input type="number" id="PrixTtcOption" name="PrixTtcOption" step=".01" />
             
         </div>
-
-
 
         <div class="content-form-input">
             <label for="EnVenteOption">

@@ -25,22 +25,47 @@ class Bureau {
     public $tarifHT;    
     
     /**
+     * TVA applicable
+     * @var TypeTva
+     */
+    public $tva;
+    
+    /**
      * Est-ce que ce bureau est en vente ?
      * @var bool 
      */
     public $enVente;
+    
+    /**
+     * Position de départ par rapport au modèle.
+     * @var Point 
+     */
+    public $position;
 
     /**
      * Constructeur.
      * @param Salle $salle Salle dont dépend le Bureau.
      * @param float $tarifHT Tarif HT du bureau à la journée.
-     * @param int $id IDentifiant DB.
+     * @param TypeTva $tva La TVA applicable.
      * @param bool $enVente Est-ce que ce bureau est en vente ?
+     * @param Point $position Position de départ par rapport au modèle.     *
+     * @param int $id IDentifiant DB.
      */
-    public function __construct($salle, $tarifHT,  $id = 0, $enVente = false) {
+    public function __construct($salle, $tarifHT, $tva, $enVente, $position, $id = 0) {
         $this->id = $id;
         $this->salle = $salle;
         $this->tarifHT = $tarifHT;
+        $this->tva = $tva;
+        $this->enVente = $enVente;
+        $this->position = $position;
+    }
+    
+    /**
+     * Calcule le prix TTC du bureau arrondi à 2 décimales.
+     * @return float Le prix TTC de l'option.
+     */
+    public function tarifTTC(){
+        return calculerTTC($this->tarifHT, $this->tva->taux);
     }
     
     /**
@@ -109,8 +134,10 @@ class Bureau {
         return new Bureau(
             Salle::charger($datas["IdSalle"]),
             $datas["TarifJournalierHT"],
-            $datas["IdBureau"],
-            $datas["enVente"] == 1
+            TypeTva::charger($datas["IdTva"]),                
+            $datas["enVente"] == 1,
+            new Position( $datas["PositionX"],  $datas["PositionY"]),
+            $datas["IdBureau"]
         );
     }
     
@@ -142,9 +169,9 @@ class Bureau {
         $id = Config::get("DB_MANAGER")->exec(
             // param 1: requête préparée
             "INSERT INTO wam_bureau(
-                TarifJournalierHT, IdSalle, enVente
+                TarifJournalierHT, IdSalle, IdTva, PositionX, PositionY, enVente
             ) VALUES (
-                :TarifJournalierHT, :IdSalle, :enVente
+                :TarifJournalierHT, :IdSalle, :IdTva, :PositionX, :PositionY, :enVente
             );",
             // param 2: valeurs issues du formulaire
             $this->parametresSQL(true),
@@ -172,6 +199,9 @@ class Bureau {
             "UPDATE wam_option SET
                 TarifJournalierHT = :TarifJournalierHT,
                 IdSalle = :IdSalle,
+                IdTva = :IdTva,
+                PositionX = :PositionX,
+                PositionY = :PositionY,
                 enVente = :enVente           
             WHERE IdBureau = :id",
             // param 2: valeurs issues du formulaire
@@ -194,6 +224,9 @@ class Bureau {
         $result = array(
             "TarifJournalierHT" => $this->tarifHT,
             "IdSalle" => $this->salle->id,
+            "IdTva" => $this->tva->id,
+            "PositionX" => $this->position->x,
+            "PositionY" => $this->position->y,
             "enVente" => $this->enVente ? "1" : "0",
         );
                 
@@ -217,8 +250,11 @@ class Bureau {
         return new Bureau(
             Salle::charger($requestParameters["IdSalleBureau"]),            
             $requestParameters["TarifHtBureau"],
-            isset($requestParameters["IdBureau"]),
-            $requestParameters["EnVenteBureau"]                
+            TypeTva::charger($requestParameters["IdTvaBureau"]),   
+            isset($requestParameters["EnVenteBureau"]),
+            new Position( $datas["PositionXBureau"],  $datas["PositionYBureau"]),
+            $requestParameters["IdBureau"]                
         );
+       
     }    
 }

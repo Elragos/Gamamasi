@@ -15,6 +15,15 @@ function ouvrirPopinSalle(){
     $("#EnVenteSalle").removeAttr("checked");
 }
 
+// Calculer le TTC en fonction du HT
+function calculerTTC(){
+    var tva = $("#IdTvaSalle option:selected").attr("data-taux") || 0.0;
+    var ht = $("#TarifHtSalle").val() || 0.0;
+    var ttc = ht * (1 + (tva/100));
+
+    $("#TarifTtcSalle").val(ttc.toFixed(2));
+}
+
 $(document).ready(function(){
     // Déplacer la popin de création d'un membre dans l'overlay
     $("#admin-gestionSalle-popin").detach().appendTo("#overlay");
@@ -35,6 +44,7 @@ $(document).ready(function(){
             "NomSalle" : ligne.attr("data-salle-nom"),
             "CapaciteSalle" : ligne.attr("data-salle-capacite"),
             "TarifHtSalle" : ligne.attr("data-salle-tarif"),
+            "IdTvaSalle" : ligne.attr("data-salle-tva"),
             "TypeSalle" : ligne.attr("data-salle-type"),
             "EnVenteSalle" : ligne.attr("data-salle-enVente") == 1,
             "PosXSalle" : ligne.attr("data-salle-posX"),
@@ -54,7 +64,9 @@ $(document).ready(function(){
         }
         else{
             $("#EnVenteSalle").removeAttr("checked");
-        }      
+        } 
+        
+        calculerTTC();
     });
 
     // Fermer la popin si l'on clique en dehors de la popin
@@ -69,5 +81,20 @@ $(document).ready(function(){
             // On ferme la popin
             fermerPopinSalle();
         }
-    });   
+    });
+     
+    // Au changement du taux de TVA, recalculer le prix TTC
+    $("#IdTvaSalle").change(calculerTTC);
+    
+    // Au changement du prix HT, recalculer le TTC
+    $("#TarifHtSalle").change(calculerTTC);
+    
+    // Si on change le prix TTC, recalculer le prix HT
+    $("#TarifTtcSalle").change(function(){
+        var tva = $("#IdTvaSalle option:selected").attr("data-taux") || 0.0;
+        var ttc = $("#TarifTtcSalle").val() || 0.0;
+        var ht = ttc / (1 + (tva/100));
+
+        $("#TarifHtSalle").val(ht.toFixed(3));
+    });
 });

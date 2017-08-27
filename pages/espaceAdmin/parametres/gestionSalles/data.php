@@ -14,6 +14,7 @@ Config::get("RENDER_MANAGER")->pageDatas = array(
     "admin" => Admin::recupererSessionActive(),
     "listeSalles" => Salle::chargerTout(),
     "typesSalle" => Salle::$typesSalle,
+    "typesTva" => TypeTva::chargerTout(),
     "activeMenu" => "parametres",
     "activeSubMenu" => "gestionSalles",
 );

@@ -9,7 +9,10 @@
                     Capacité maximale
                 </th>
                 <th>
-                    Tarif horaire HT
+                    Tarif horaire
+                </th>
+                <th>
+                    TVA applicable
                 </th>
                 <th>
                     Type de salle
@@ -27,6 +30,7 @@
                 <tr data-salle-id="{$salle->id}" data-salle-nom="{$salle->nom}"
                     data-salle-capacite="{$salle->capaciteMax}"
                     data-salle-tarif="{$salle->tarifHT|string_format:"%.3f"}"
+                    data-salle-tva="{$salle->tva->id}"
                     data-salle-type="{$salle->type}"
                     data-salle-posX="{$salle->position->x}"
                     data-salle-posY="{$salle->position->y}"
@@ -41,6 +45,10 @@
                     </td>
                     <td>
                         {$salle->tarifHT|string_format:"%.3f"} &euro; HT <br />
+                        {$salle->tarifTTC()|string_format:"%.2f"} &euro; TTC
+                    </td>
+                    <td>
+                        {$salle->tva->nom} ({$salle->tva->taux} %)
                     </td>
                     <td>
                         {if $salle->type == 0}
@@ -57,6 +65,11 @@
                         {/if}
                     </td>
                     <td>
+                        {if $salle->type == 1}
+                        <button class="admin-gestionSalle-modifier">
+                            Gérer les bureaux
+                        </button>
+                        {/if}
                         <button class="admin-gestionSalle-modifier">
                             Modifier
                         </button>
@@ -91,15 +104,35 @@
             </label>
             <input type="text" id="NomSalle" name="NomSalle" />
         </div>
-      
+        
+        <div class="content-form-input">
+            <label for="IdTvaSalle">
+                TVA applicable
+            </label>
+            <select id="IdTvaSalle" name="IdTvaSalle">
+                {foreach from=$typesTva item=typeTva}
+                    <option value="{$typeTva->id}" data-taux="{$typeTva->taux}">
+                        {$typeTva->nom} ({$typeTva->taux|number_format:2}%)
+                    </option>
+                {/foreach}
+            </select>
+        </div>
+            
         <div class="content-form-input">
             <label for="TarifHtSalle">
                 Tarif horaire HT
             </label>
             <input type="number" id="TarifHtSalle" name="TarifHtSalle" step = ".001" />
         </div>
+            
+        <div class="content-form-input">
+            <label for="TarifTtcSalle">
+                Tarif horaire TTC
+            </label>
+            <input type="number" id="TarifTtcSalle" name="TarifTtcSalle" step=".01" />
+            
+        </div>        
         
-      
         <div class="content-form-input">
             <label for="CapaciteSalle">
                 Capacité de la salle

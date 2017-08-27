@@ -12,17 +12,57 @@ body{
         }
     }
     
-    div{
-        color: red;
-        a{
-            text-decoration: none;
-            &:visited, &:link{
-                color: black;
+    #client-reservation{
+        #plan{
+            background-color: #24445C;
+            border: 1px solid black;
+            height: 768px;
+            position: relative;
+            width: 1024px;
+            
+            .piece{
+                background-color: #2C75FF;
+                border: 1px solid black;
+                height: 600px;
+                position: absolute;
+                width: 800px;
+                
+                .table{
+                    background-color: #E8D630;
+                    border: 1px solid black;
+                    height: 100px;
+                    float: left;
+                    position: relative;
+                    width: 100px;
+                    
+                    .bureau{
+                        position: absolute;
+                        
+                        &.bureau-libre{
+                            cursor: pointer;
+                        }
+                    }
+                }
             }
         }
-        &.client{
-            color: black;
+    }
+    
+    .bureau  {
+        span{
+            font-size: 20px;
         }
+
+        &.bureau-libre{
+             span{
+                color: #09A609;
+            }
+        }
+
+        &.bureau-occupe{
+            span{
+                color: #EE1010
+            }
+        }                       
     }
     
     .content-form-input{
@@ -89,6 +129,7 @@ body{
                 display: block;
                 height: 20px;
                 .popin-toolbar-close{
+                    cursor: pointer;
                     padding: 1px;
                     position: absolute;
                     right: 14px;

@@ -31,6 +31,12 @@ class Salle {
     public $tarifHT;
     
     /**
+     * TVA applicable.
+     * @var TypeTva 
+     */
+    public $tva;
+    
+    /**
      * Type de salle.
      * @var int  
      */
@@ -74,6 +80,7 @@ class Salle {
      * @param string $nom Le nom de la salle
      * @param int $capaciteMax La capacité maximale de la salle.
      * @param float $tarifHT Le tarif HT à l'heure.
+     * @param TypeTva $tva La TVA applicable.
      * @param int $type Le type de salle.
      * @param bool $enVente Est-ce que la salle est en vente ?
      * @param Point $position Position de départ par rapport au modèle.
@@ -81,16 +88,25 @@ class Salle {
      * @param int $largeur Largeur en pixels de la salle.
      * @param int $id Identifiant DB de la salle.
      */
-    public function __construct($nom, $capaciteMax, $tarifHT, $type, $enVente, $position, $longueur, $largeur, $id = 0){
+    public function __construct($nom, $capaciteMax, $tarifHT, $tva, $type, $enVente, $position, $longueur, $largeur, $id = 0){
         $this->id = $id;
         $this->nom = $nom;
         $this->capaciteMax = $capaciteMax;
         $this->tarifHT = $tarifHT;
+        $this->tva = $tva;
         $this->type = $type;
         $this->enVente = $enVente;
         $this->position = $position;
         $this->longueur = $longueur;
         $this->largeur = $largeur;
+    }
+    
+    /**
+     * Calcule le prix TTC de la salle arrondi à 2 décimales.
+     * @return float Le prix TTC de l'option.
+     */
+    public function tarifTTC(){
+        return calculerTTC($this->tarifHT, $this->tva->taux);
     }
     
     /**
@@ -157,6 +173,7 @@ class Salle {
             $datas["Nom"],
             $datas["CapaciteMax"],
             $datas["TarifHoraireHT"],
+            TypeTva::charger($datas["IdTva"]),
             $datas["TypeSalle"],
             $datas["enVente"] == 1,
             new Point($datas["posX"], $datas["posY"]),
@@ -194,9 +211,9 @@ class Salle {
         $id = Config::get("DB_MANAGER")->exec(
             // param 1: requête préparée
             "INSERT INTO wam_salle(
-                Nom, TarifHoraireHT, CapaciteMax, TypeSalle, enVente
+                Nom, TarifHoraireHT, IdTva, CapaciteMax, TypeSalle, enVente
             ) VALUES (
-                :Nom, :TarifHoraireHT, :CapaciteMax, :TypeSalle, :enVente
+                :Nom, :TarifHoraireHT, :IdTva, :CapaciteMax, :TypeSalle, :enVente
             );",
             // param 2: valeurs issues du formulaire
             $this->parametresSQL(true),
@@ -224,6 +241,7 @@ class Salle {
             "UPDATE wam_salle SET
                 Nom = :Nom,
                 TarifHoraireHT = :TarifHoraireHT,
+                IdTva = :IdTva,
                 CapaciteMax = :CapaciteMax,
                 TypeSalle = :TypeSalle,
                 enVente = :enVente
@@ -248,6 +266,7 @@ class Salle {
         $result = array(
             "Nom" => $this->nom,
             "TarifHoraireHT" => $this->tarifHT,
+            "IdTva" => $this->tva->id,
             "CapaciteMax" => $this->capaciteMax,
             "TypeSalle" => $this->type,
             "enVente" => $this->enVente ? "1" : "0",
@@ -274,10 +293,10 @@ class Salle {
             $requestParameters["NomSalle"],
             $requestParameters["CapaciteSalle"],
             $requestParameters["TarifHtSalle"],
+            TypeTva::charger($requestParameters["IdTvaSalle"]),
             $requestParameters["TypeSalle"],
             isset($requestParameters["EnVenteSalle"]),
-            $requestParameters["PosXSalle"],
-            $requestParameters["PosYSalle"],
+            new Point($requestParameters["PosXSalle"], $requestParameters["PosYSalle"]),
             $requestParameters["LongueurSalle"],
             $requestParameters["LargeurSalle"],
             $requestParameters["IdSalle"]
