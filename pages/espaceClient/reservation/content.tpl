@@ -47,6 +47,9 @@
             </div>
         </div>
         <div id="reservation" class="col-xs-4 col-md-2">
+            <h2>
+                Légende
+            </h2>
             <div id="legende">
                 <div class="bureau bureau-libre">
                     <span class="glyphicon glyphicon-user"></span>
@@ -59,8 +62,13 @@
             </div>
 
             <div id="calendrier">
-                Date de réservation
-                <input type="date" />
+                <h2>
+                    Date de réservation
+                </h2>
+                
+                Du <input type="date"  id="dateDebut" name="dateDebut"/> 
+                <br />
+                Au <input type="date"  id="dateFin" name="dateFin" />
             </div>
         </div>
     </div>    

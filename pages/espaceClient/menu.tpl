@@ -2,8 +2,9 @@
     <nav class="navbar navbar-inverse">
         <div class="container">
             <div class="navbar-header">
+                <img src="{$rootURL}ressources/images/logo.png" alt="Wam & Co" width="45px" />
                 <a href="{absoluteURL page="espaceClient/index"}" class="navbar-brand">
-                    <img src="{$rootURL}ressources/images/logo.png" alt="Wam & Co" width="40px" />
+                    Wam & Co
                 </a>
             </div>
             <div class="navbar-collapse collapse">

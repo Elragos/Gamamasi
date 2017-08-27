@@ -47,10 +47,10 @@
                         {/if}
                     </td>
                     <td>
-                        <button class="client-membre-modifier">
+                        <button class="client-membre-modifier btn btn-info btn-sm" data-toggle="modal" data-target="#client-membre-modal">
                             Modifier
                         </button>
-                        <button class="client-membre-supprimer">
+                        <button class="client-membre-supprimer btn btn-danger btn-sm">
                             Supprimer
                         </button>
                     </td>
@@ -59,71 +59,77 @@
         </tbody>
     </table>
         
-    <button type="button" id="AjouterMembre">
+    <button id="AjouterMembre" type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#client-membre-modal">
         Ajouter un membre
     </button>
 </div>
 
-<div class="popin" id="client-membre-popin">
-    <div class="popin-toolbar">
-        <div class="popin-toolbar-close">
-            X
+<div  class="modal fade" role="dialog" id="client-membre-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Ajouter/Modifier un membre</h4>
+            </div>
+
+            <div class="modal-body">
+                <form action="{absoluteURL page="espaceClient/membres" action=true}" method="POST">
+                    <input type="hidden" id="IdMembre" name="IdMembre" value="0" />
+
+                    <div class="content-form-input">
+                        <label for="NomMembre">
+                            Nom
+                        </label>
+                        <input type="text" id="NomMembre" name="NomMembre" />
+                    </div>
+
+                    <div class="content-form-input">
+                        <label for="PrenomMembre">
+                            Prénom
+                        </label>
+                        <input type="text" id="PrenomMembre" name="PrenomMembre" />
+                    </div>
+
+                    <div class="content-form-input">
+                        <label for="MailMembre">
+                            Mail
+                        </label>
+                        <input type="text" id="MailMembre" name="MailMembre" />
+                    </div>
+
+                    <div class="content-form-input">
+                        <label for="IdTypeMembre">
+                            Type de membre
+                        </label>
+                        <select id="IdTypeMembre" name="IdTypeMembre">
+                            {foreach from=$typesMembres item=typeMembre}
+                            <option value="{$typeMembre->id}">
+                                {$typeMembre->nom}
+                            </option>
+                            {/foreach}
+                        </select>
+                    </div>
+
+                    <div class="content-form-input">
+                        <label for="IdSecteurActivite">
+                            Secteur d'activité
+                        </label>
+                        <select id="IdSecteurActivite" name="IdSecteurActivite">
+                            <option value="0"> -- Non précisé -- </option>
+                            {foreach from=$secteursActivite item=secteur}
+                            <option value="{$secteur->id}">
+                                {$secteur->nom}
+                            </option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="content-form-input">
+                        <button type="submit">
+                            Valider
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    <form action="{absoluteURL page="espaceClient/membres" action=true}" method="POST">
-        <input type="hidden" id="IdMembre" name="IdMembre" value="0" />
-        
-        <div class="content-form-input">
-            <label for="NomMembre">
-                Nom
-            </label>
-            <input type="text" id="NomMembre" name="NomMembre" />
-        </div>
-        
-        <div class="content-form-input">
-            <label for="PrenomMembre">
-                Prénom
-            </label>
-            <input type="text" id="PrenomMembre" name="PrenomMembre" />
-        </div>
-        
-        <div class="content-form-input">
-            <label for="MailMembre">
-                Mail
-            </label>
-            <input type="text" id="MailMembre" name="MailMembre" />
-        </div>
-        
-        <div class="content-form-input">
-            <label for="IdTypeMembre">
-                Type de membre
-            </label>
-            <select id="IdTypeMembre" name="IdTypeMembre">
-                {foreach from=$typesMembres item=typeMembre}
-                <option value="{$typeMembre->id}">
-                    {$typeMembre->nom}
-                </option>
-                {/foreach}
-            </select>
-        </div>
-            
-        <div class="content-form-input">
-            <label for="IdSecteurActivite">
-                Secteur d'activité
-            </label>
-            <select id="IdSecteurActivite" name="IdSecteurActivite">
-                <option value="0"> -- Non précisé -- </option>
-                {foreach from=$secteursActivite item=secteur}
-                <option value="{$secteur->id}">
-                    {$secteur->nom}
-                </option>
-                {/foreach}
-            </select>
-        </div>
-        <div class="content-form-input">
-            <button type="submit">
-                Valider
-            </button>
-        </div>
-    </form>
 </div>

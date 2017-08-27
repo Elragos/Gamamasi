@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <title>{$titre}</title>
         <meta charset="UTF-8">
@@ -14,6 +14,7 @@
         <script type="text/javascript" src="{$rootURL}js/tools.js"></script>        
         <script type="text/javascript" src="{$rootURL}js/interact.js"></script>
         <script type="text/javascript" src="{$rootURL}js/jquery-3.2.1.js"></script>
+        <script type="text/javascript" src="{$rootURL}js/jquery-ui.min.js"></script>
         <script type="text/javascript" src="{$rootURL}js/bootstrap.min.js"></script>        
         <script type="text/javascript" src="{$rootURL}js/interact-div-modele.js"></script>
         <script type="text/javascript" src="{$rootURL}js/interact-div-piece.js"></script>
@@ -37,6 +38,19 @@
         {include file=$bodyContent caching}
         
         <script type="text/javascript">
+            
+            /**
+             *  Récupérer le format de date
+             * @param bool affichage Est-ce que c'est le format d'affichage ?
+             * @returns string Le format de date à utiliser.
+             */
+            function formatDate(affichage = true){
+                if (affichage){
+                    return "{Config::get("formatDateAffichageJS")}";
+                }
+                return "{Config::get("formatDateTechiqueJS")}";
+            }
+            
             {$js}
         </script>
         
